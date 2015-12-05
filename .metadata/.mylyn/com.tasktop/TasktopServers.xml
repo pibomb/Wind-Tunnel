@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TasktopServers>
+<TasktopServer id="https://tasktop.com/" label="Tasktop Account" org.eclipse.mylyn.repositories.proxy.usedefault="true" url="https://my.tasktop.com/services/dev/license-check"/>
+</TasktopServers>

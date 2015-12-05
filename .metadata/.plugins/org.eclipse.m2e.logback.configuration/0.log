@@ -1,0 +1,16 @@
+2015-12-05 12:03:59,154 [main] INFO  c.t.i.a.b.BridgeConnectorRegistryProvider - The location C:\bin\eclipse\eclipse\connectors is not a directory. No additional connectors were loaded.
+2015-12-05 12:03:59,292 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 12:04:12,558 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 12:04:12,607 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+<<<<<<< HEAD
+=======
+2015-12-05 12:09:19,581 [main] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache file is not available. Remote download required.
+>>>>>>> origin/master
+2015-12-05 14:33:37,692 [main] INFO  c.t.i.a.b.BridgeConnectorRegistryProvider - The location C:\bin\eclipse\eclipse\connectors is not a directory. No additional connectors were loaded.
+2015-12-05 14:33:37,740 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 14:33:38,946 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 14:33:39,554 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 14:43:55,951 [main] INFO  c.t.i.a.b.BridgeConnectorRegistryProvider - The location C:\bin\eclipse\eclipse\connectors is not a directory. No additional connectors were loaded.
+2015-12-05 14:43:55,998 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 14:43:57,434 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2015-12-05 14:43:57,511 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
