@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="C:\bin\java\jdk7u79" version="1.7.0_79">
+<bootpath>
+<entry path="C:\bin\java\jdk7u79\lib\resources.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\rt.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\sunrsasign.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\jsse.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\jce.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\charsets.jar"/>
+<entry path="C:\bin\java\jdk7u79\lib\jfr.jar"/>
+<entry path="C:\bin\java\jdk7u79\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\bin\java\jdk7u79\lib\ext"/>
+<entry path="C:\Windows\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\bin\java\jdk7u79\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+<libraryInfo home="C:\bin\java\jdk8u65" version="1.8.0_65">
+<bootpath>
+<entry path="C:\bin\java\jdk8u65\jre\lib\resources.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\rt.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\sunrsasign.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\jsse.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\jce.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\charsets.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\lib\jfr.jar"/>
+<entry path="C:\bin\java\jdk8u65\jre\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\bin\java\jdk8u65\jre\lib\ext"/>
+<entry path="C:\Windows\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\bin\java\jdk8u65\jre\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

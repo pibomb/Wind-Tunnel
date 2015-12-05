@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;Wind Tunnel&apos;" deleteContents="false" description="Delete resource &apos;Wind Tunnel&apos;" element1="/Wind Tunnel" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1449335110309"/>&#x0A;<refactoring comment="Delete resource &apos;Wind Tunnel&apos;" deleteContents="false" description="Delete resource &apos;Wind Tunnel&apos;" element1="/Wind Tunnel" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1449335199183"/>
+=======
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Wind Tunnel&apos;" deleteContents="false" description="Delete resource &apos;Wind Tunnel&apos;" element1="/Wind Tunnel" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1449334596171"/>
+>>>>>>> origin/master
+</session>
