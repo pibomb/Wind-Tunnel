@@ -1712,7 +1712,11 @@ Caused by: java.net.SocketTimeoutException: Read timed out
 
 !ENTRY org.eclipse.jdt.core 4 0 2015-12-05 15:24:17.616
 !MESSAGE Invalid ZIP archive: lib/rxtxSerial.dll [in Wind Tunnel]
+<<<<<<< HEAD
 !SESSION 2015-12-06 14:46:31.732 -----------------------------------------------
+=======
+!SESSION 2015-12-06 16:07:48.363 -----------------------------------------------
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 eclipse.buildId=4.5.1.M20150904-0015
 java.version=1.7.0_79
 java.vendor=Oracle Corporation
@@ -1720,13 +1724,18 @@ BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
 Framework arguments:  -product org.eclipse.epp.package.java.product
 Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.egit.ui 2 0 2015-12-06 14:47:21.330
+=======
+!ENTRY org.eclipse.egit.ui 2 0 2015-12-06 16:08:31.184
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
 user global configuration and to define the default location to store repositories: 'C:\Users\mcmor'. If this is
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
 
+<<<<<<< HEAD
 !ENTRY com.tasktop.client.auth 2 0 2015-12-06 14:47:21.550
 !MESSAGE Reading license failed.
 !SUBENTRY 1 com.tasktop.client.auth 2 0 2015-12-06 14:47:21.550
@@ -1735,6 +1744,16 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 !MESSAGE Could not find or access license anywhere.
 
 !ENTRY org.eclipse.epp.logging.aeri.ui 2 5 2015-12-06 14:47:26.553
+=======
+!ENTRY com.tasktop.client.auth 2 0 2015-12-06 16:08:31.298
+!MESSAGE Reading license failed.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2015-12-06 16:08:31.298
+!MESSAGE Could not find or access license at C:\Users\mcmor\AppData\Roaming\Tasktop.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2015-12-06 16:08:31.298
+!MESSAGE Could not find or access license anywhere.
+
+!ENTRY org.eclipse.epp.logging.aeri.ui 2 5 2015-12-06 16:08:37.368
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !MESSAGE The configuration download failed. Version: 1.0.1.v20150913-0716
 !STACK 0
 java.net.SocketTimeoutException: Read timed out
@@ -1771,7 +1790,11 @@ java.net.SocketTimeoutException: Read timed out
 	at org.eclipse.epp.internal.logging.aeri.ide.Startup$1.run(Startup.java:98)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.epp.logging.aeri.ui 2 29 2015-12-06 14:47:26.557
+=======
+!ENTRY org.eclipse.epp.logging.aeri.ui 2 29 2015-12-06 16:08:37.372
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !MESSAGE Startup failed, AERI is disabled until next restart. Version: 1.0.1.v20150913-0716
 !STACK 0
 java.lang.RuntimeException: java.net.SocketTimeoutException: Read timed out
@@ -1811,6 +1834,7 @@ Caused by: java.net.SocketTimeoutException: Read timed out
 	at org.eclipse.epp.internal.logging.aeri.ui.v2.AeriServer.refreshConfiguration(AeriServer.java:73)
 	at org.eclipse.epp.internal.logging.aeri.ide.Startup.initializeServerAndConfiguration(Startup.java:211)
 	... 3 more
+<<<<<<< HEAD
 !SESSION 2015-12-06 15:50:39.154 -----------------------------------------------
 eclipse.buildId=4.5.1.M20150904-0015
 java.version=1.7.0_79
@@ -1835,6 +1859,11 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.e4.ui.workbench 4 0 2015-12-06 15:51:06.424
 !MESSAGE Error setting focus to : org.eclipse.e4.ui.model.application.ui.basic.impl.PartImpl BitTester.java
+=======
+
+!ENTRY org.eclipse.e4.ui.workbench 4 0 2015-12-06 16:55:17.781
+!MESSAGE Error setting focus to : org.eclipse.e4.ui.model.application.ui.basic.impl.PartImpl Test.java
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !STACK 0
 org.eclipse.swt.SWTException: Widget is disposed
 	at org.eclipse.swt.SWT.error(SWT.java:4491)
@@ -1919,8 +1948,34 @@ org.eclipse.swt.SWTException: Widget is disposed
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:608)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1515)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1488)
+<<<<<<< HEAD
 
 !ENTRY org.eclipse.epp.logging.aeri.ui 2 5 2015-12-06 15:51:09.620
+=======
+!SESSION 2015-12-06 16:57:46.456 -----------------------------------------------
+eclipse.buildId=4.5.1.M20150904-0015
+java.version=1.7.0_79
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-12-06 16:58:04.985
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\mcmor'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.tasktop.client.auth 2 0 2015-12-06 16:58:05.320
+!MESSAGE Reading license failed.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2015-12-06 16:58:05.320
+!MESSAGE Could not find or access license at C:\Users\mcmor\AppData\Roaming\Tasktop.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2015-12-06 16:58:05.320
+!MESSAGE Could not find or access license anywhere.
+
+!ENTRY org.eclipse.epp.logging.aeri.ui 2 5 2015-12-06 16:58:11.799
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !MESSAGE The configuration download failed. Version: 1.0.1.v20150913-0716
 !STACK 0
 java.net.SocketTimeoutException: Read timed out
@@ -1957,7 +2012,11 @@ java.net.SocketTimeoutException: Read timed out
 	at org.eclipse.epp.internal.logging.aeri.ide.Startup$1.run(Startup.java:98)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.epp.logging.aeri.ui 2 29 2015-12-06 15:51:09.624
+=======
+!ENTRY org.eclipse.epp.logging.aeri.ui 2 29 2015-12-06 16:58:11.802
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 !MESSAGE Startup failed, AERI is disabled until next restart. Version: 1.0.1.v20150913-0716
 !STACK 0
 java.lang.RuntimeException: java.net.SocketTimeoutException: Read timed out
@@ -1997,3 +2056,50 @@ Caused by: java.net.SocketTimeoutException: Read timed out
 	at org.eclipse.epp.internal.logging.aeri.ui.v2.AeriServer.refreshConfiguration(AeriServer.java:73)
 	at org.eclipse.epp.internal.logging.aeri.ide.Startup.initializeServerAndConfiguration(Startup.java:211)
 	... 3 more
+<<<<<<< HEAD
+=======
+
+!ENTRY org.eclipse.recommenders.types.rcp 1 3 2015-12-06 23:26:42.825
+!MESSAGE Full project indexing required:
+  [+] C:\bin\java\jdk8u65\jre\lib\charsets.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\access-bridge-64.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\cldrdata.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\dnsns.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\jaccess.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\jfxrt.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\localedata.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\nashorn.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\sunec.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\sunjce_provider.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\sunmscapi.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\sunpkcs11.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\ext\zipfs.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\jce.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\jfr.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\jsse.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\resources.jar
+  [+] C:\bin\java\jdk8u65\jre\lib\rt.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\activation-1.1.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-console-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-core-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-mail-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-mqtt-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-networkproxyserver-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\ardulink-swing-0.6.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\args4j-2.32.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\bluecove-2.1.1-SNAPSHOT.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\javax.mail-1.5.4.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\mqtt-client-0.4.0.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\rxtx-2.1.7.jar
+  [+] C:\src\GitHub\AP Physics\Wind Tunnel\Wind Tunnel\lib\usb-0.5.9.jar
+
+!STACK 0
+org.eclipse.recommenders.utils.Logs$LogTraceException
+	at org.eclipse.recommenders.utils.Logs$LogTraceException.newTrace(Logs.java:381)
+	at org.eclipse.recommenders.utils.Logs.log(Logs.java:134)
+	at org.eclipse.recommenders.internal.types.rcp.ProjectTypesIndex.needsRebuild(ProjectTypesIndex.java:170)
+	at org.eclipse.recommenders.internal.types.rcp.ProjectTypesIndex.startUp(ProjectTypesIndex.java:126)
+	at com.google.common.util.concurrent.AbstractIdleService$2$1.run(AbstractIdleService.java:54)
+	at com.google.common.util.concurrent.Callables$3.run(Callables.java:93)
+	at java.lang.Thread.run(Unknown Source)
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
