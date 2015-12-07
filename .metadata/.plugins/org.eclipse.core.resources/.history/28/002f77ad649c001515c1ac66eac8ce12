@@ -1,7 +1,0 @@
-package org.demons.gui;
-
-import javax.swing.*;
-
-public class OperationFrame extends JFrame {
-
-}
