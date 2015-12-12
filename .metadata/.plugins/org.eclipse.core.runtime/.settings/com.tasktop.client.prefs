@@ -1,5 +1,9 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
 >>>>>>>=origin/master
-com.tasktop.client.ui.update.weekly.timestamp=1449344647225
+<<<<<<< HEAD
+com.tasktop.client.ui.update.weekly.timestamp=1449435062605
+=======
+com.tasktop.client.ui.update.weekly.timestamp=1449439084733
+>>>>>>> parent of 48d251a... Revert "Graphics 0"
 eclipse.preferences.version=1
