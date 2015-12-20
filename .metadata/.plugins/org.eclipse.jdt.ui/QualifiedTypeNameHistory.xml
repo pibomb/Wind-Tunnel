@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="org.demons.gui.OperationFrame"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.awt.Toolkit"/>
-<fullyQualifiedTypeName name="javax.swing.JPanel"/>
-<fullyQualifiedTypeName name="javax.swing.JSeparator"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="javax.swing.SwingUtilities"/>
+<fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="java.awt.Graphics2D"/>
+<fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+<fullyQualifiedTypeName name="javax.swing.JSeparator"/>
+<fullyQualifiedTypeName name="java.awt.Graphics"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="org.demons.gui.ArduinoCommunicationPanel"/>
+<fullyQualifiedTypeName name="org.demons.gui.ArduinoStatSummary"/>
+<fullyQualifiedTypeName name="org.demons.gui.ArduinoPinManager"/>
+<fullyQualifiedTypeName name="org.demons.gui.WindTunnelGraphicsDisplay"/>
+<fullyQualifiedTypeName name="org.demons.gui.Console"/>
+<fullyQualifiedTypeName name="org.demons.gui.SettingsPanel"/>
+<fullyQualifiedTypeName name="org.demons.gui.CurrentValues"/>
+<fullyQualifiedTypeName name="org.demons.gui.CurrentValuesPanel"/>
+<fullyQualifiedTypeName name="org.demons.gui.HistoryValuesPanel"/>
 </qualifiedTypeNameHistroy>

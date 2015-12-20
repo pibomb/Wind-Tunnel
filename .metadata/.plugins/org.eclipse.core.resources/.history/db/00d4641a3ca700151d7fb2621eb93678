@@ -1,0 +1,16 @@
+package org.demons.gui;
+
+import javax.swing.JPanel;
+
+class ArduinoCommunicationPanel extends JPanel {
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2739228960818599179L;
+
+	ArduinoCommunicationPanel() {
+		
+	}
+}

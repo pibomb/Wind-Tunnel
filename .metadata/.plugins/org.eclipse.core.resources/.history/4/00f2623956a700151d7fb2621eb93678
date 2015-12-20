@@ -1,0 +1,102 @@
+package org.demons.gui;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import javax.swing.*;
+
+public class OperationFrame extends JFrame {
+	// Generated Serial Version UID
+	private static final long serialVersionUID = -3754531649923171524L;
+	
+	/**
+	 * List of panels of the GUI
+	 * Panel Hierarchy:
+	 * 
+	 * content
+	 * 	> left
+	 * 	> center
+	 * 	> right
+	 * 		- acp (ArduinoCommunicationPanel)
+	 */
+	private JPanel content;
+	private JPanel left, center, right;
+	
+	private ArduinoCommunicationPanel acp;
+	private ArduinoStatSummary ass;
+	
+	// Separators that divide up the panels
+	private JSeparator divL, divR; // Divide the content pane into left and right
+	
+	// Class constructor
+	public OperationFrame() {
+		super("Maxwell's Demons");
+		
+		// Set to fullscreen
+		setExtendedState(MAXIMIZED_BOTH);
+		setUndecorated(true);
+		
+		// Quit when screen is closed
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		// Initialize components
+		initContent();
+		
+		// Make frame visible
+		setVisible(true);
+	}
+	
+	private void initContent() {
+		// Coordinate points for panel boundaries
+		int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		int height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		int div1 = width / 5;
+		int div2 = width / 5 * 4;
+		
+		// Set content panel
+		content = new JPanel();
+		content.setLayout(null);
+		content.setBounds(0, 0, width, height);
+		
+		// Initialize the left, center, and right panels
+		left = new JPanel();
+		center = new JPanel();
+		right = new JPanel();
+		right.setLayout(new GridLayout(3,1));
+		
+		// Initialize the left and right separators for the content pane
+		divL = new JSeparator(JSeparator.VERTICAL);
+		divR = new JSeparator(JSeparator.VERTICAL);		
+		
+		// Set boundaries for left, center, and right panels
+		left.setBounds(0, 0, div1-1, height);
+		center.setBounds(div1+1, 0, div2-div1-1, height);
+		right.setBounds(div2+1, 0, width-div2-1, height);
+		
+		// Set boundaries for the content pane separators
+		divL.setBounds(div1, 0, div1, height);
+		divR.setBounds(div2, 0, div2, height);
+		
+		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight());
+		
+		//rdivU = new JSeparator(JSeparator.HORIZONTAL);
+		//rdivU.setBounds(0, rdiv1, right.getWidth(), rdiv1);
+		
+		right.add(acp);
+		right.add(new JButton("BUTTON 2"));
+		right.add(new JButton("BUTTON 3"));
+		//right.add(rdivU);
+		
+		// Add components to content		
+		content.add(left);
+		content.add(center);
+		content.add(right);
+		
+		content.add(divL);
+		content.add(divR);
+		
+		// Use content as the content pane
+		setContentPane(content);
+		pack();
+	}
+}
