@@ -1,3 +1,6 @@
-action=IGNORE
+action=ASK
+anonymizeMessages=true
+configured=true
 eclipse.preferences.version=1
-rememberSendAction=RESTART
+name=
+rememberSendAction=NONE

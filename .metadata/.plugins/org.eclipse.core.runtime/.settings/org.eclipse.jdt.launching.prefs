@@ -2,4 +2,4 @@
 <<<<<<<=HEAD
 >>>>>>>=origin/master
 eclipse.preferences.version=1
-org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1449335132472" defaultVMConnector\="">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1449335132472" name\="jdk8u65" path\="C\:\\bin\\java\\jdk8u65"/>\r\n<vm id\="1449335149138" name\="jdk7u79" path\="C\:\\bin\\java\\jdk7u79"/>\r\n</vmType>\r\n</vmSettings>\r\n
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1450546760337" defaultVMConnector\="">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1450546760337" name\="jdk1.7.0_45" path\="C\:\\bin\\java\\jdk1.7.0_45"/>\r\n</vmType>\r\n</vmSettings>\r\n
