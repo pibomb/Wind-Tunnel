@@ -57,8 +57,8 @@ void setup() {
   // Turn off LED this is needed just as example for this sketch
 //  analogWrite(11, intensity);
   
-  // Read from 4 this is needed just as example for this sketch
-//  pinMode(4, INPUT);
+  // Read from 3 this is needed just as example for this sketch
+  pinMode(3, INPUT);
 }
 
 void loop() {

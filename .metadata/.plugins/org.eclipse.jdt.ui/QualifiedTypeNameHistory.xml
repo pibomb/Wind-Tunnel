@@ -23,4 +23,7 @@
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValues"/>
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValuesPanel"/>
 <fullyQualifiedTypeName name="org.demons.gui.HistoryValuesPanel"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.protocol.IProtocol"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
 </qualifiedTypeNameHistroy>
