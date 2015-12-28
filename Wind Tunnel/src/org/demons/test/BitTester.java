@@ -73,7 +73,15 @@ public class BitTester {
 			}
 		});
 		
-		while(true)
+		while(true) {
+			try {
+				link.sendPowerPinSwitch(13, IProtocol.HIGH);
+				Thread.sleep(1000);
+				link.sendPowerPinSwitch(13, IProtocol.LOW);
+				Thread.sleep(1000);
+			} catch(Exception e) {}
+		}
+		/*
 		for(int i = 9; i >= 0; i--) {
 			for(int j = 9; j >= 0; j--) {
 				try {
@@ -85,6 +93,7 @@ public class BitTester {
 				}
 			}
 		}
+		*/
 		
 		/*
 		while(true) {

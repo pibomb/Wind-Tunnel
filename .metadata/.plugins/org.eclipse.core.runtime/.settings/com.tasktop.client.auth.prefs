@@ -1,10 +1,7 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
->>>>>>>=origin/master
+>>>>>>>=parent of 48d251a... Revert "Graphics 0"
 com.tasktop.client.auth.last-valid=73 78 78 85 76 76 73 81 72 84 73 72 72 
-<<<<<<< HEAD
-com.tasktop.client.auth.lastcheckdate=1449431223961
-=======
-com.tasktop.client.auth.lastcheckdate=1449436099900
->>>>>>> parent of 48d251a... Revert "Graphics 0"
+com.tasktop.client.auth.lastcheckdate=1450919347684
 eclipse.preferences.version=1
+firstRevocationCheckFailure=0
