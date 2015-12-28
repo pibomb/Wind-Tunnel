@@ -1,9 +1,12 @@
 package org.demons.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import javax.swing.*;
+
+import org.zu.ardulink.Link;
 
 public class OperationFrame extends JFrame {
 	// Generated Serial Version UID
@@ -40,6 +43,10 @@ public class OperationFrame extends JFrame {
 	
 	// Separators that divide up the panels
 	private JSeparator divL, divR; // Divide the content pane into left and right
+	
+	static Link link = null;
+	
+	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
 	// Class constructor
 	public OperationFrame() {
@@ -113,7 +120,7 @@ public class OperationFrame extends JFrame {
 		center.add(sp);
 		
 		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3);
-		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3);
+		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3, titleFont);
 		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3);
 		
 		right.add(acp);
