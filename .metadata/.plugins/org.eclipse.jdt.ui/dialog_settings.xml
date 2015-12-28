@@ -21,6 +21,11 @@
 	<section name="RefactoringWizard.preview">
 		<item value="400" key="height"/>
 		<item value="600" key="width"/>
+<<<<<<< HEAD
+=======
+	</section>
+	<section name="quick_assist_proposal_size">
+>>>>>>> master
 	</section>
 	<section name="NewClassWizardPage">
 		<item value="false" key="create_constructor"/>
