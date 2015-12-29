@@ -1,0 +1,35 @@
+package org.demons.gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+
+import org.zu.ardulink.gui.SerialConnectionPanel;
+
+public class ArduinoCommunicationPanel extends JPanel {
+	private static final long serialVersionUID = -2739228960818599179L;
+	
+	private final int PADDING = 10;
+	
+	private final SerialConnectionPanel serialConnectionPanel;
+	
+	public ArduinoCommunicationPanel(int width, int height) {
+		super();
+		
+		serialConnectionPanel = new SerialConnectionPanel();
+		serialConnectionPanel.setSize(width-2*PADDING,height);
+		add(serialConnectionPanel, BorderLayout.CENTER);
+		
+		setSize(width, height);
+		repaint();
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+}

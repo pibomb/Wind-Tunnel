@@ -1,14 +1,16 @@
 package org.demons.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 import org.zu.ardulink.Link;
 
-public class OperationFrame extends JFrame {
+public class OperationFrame extends JFrame implements ActionListener {
 	// Generated Serial Version UID
 	private static final long serialVersionUID = -3754531649923171524L;
 	
@@ -44,7 +46,10 @@ public class OperationFrame extends JFrame {
 	// Separators that divide up the panels
 	private JSeparator divL, divR; // Divide the content pane into left and right
 	
-	static Link link = null;
+	private Link link = Link.getDefaultInstance();
+	
+	private Timer timer;
+	private final int REFRESH_RATE = 100;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
@@ -61,6 +66,10 @@ public class OperationFrame extends JFrame {
 		
 		// Initialize components
 		initContent();
+		setupLink();
+		
+		//timer = new Timer(REFRESH_RATE, this);
+		//timer.start();
 		
 		// Make frame visible
 		setVisible(true);
@@ -138,5 +147,17 @@ public class OperationFrame extends JFrame {
 		// Use content as the content pane
 		setContentPane(content);
 		pack();
+	}
+	
+	void setupLink() {
+		acp.setLink(link);
+		ass.setLink(link);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == timer) {
+			ass.showSummary();
+		}
 	}
 }

@@ -58,7 +58,7 @@ void setup() {
 //  analogWrite(11, intensity);
   
   // Read from 3 this is needed just as example for this sketch
-  pinMode(3, INPUT);
+  //pinMode(3, INPUT);
 }
 
 void loop() {
