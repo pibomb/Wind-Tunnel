@@ -1,22 +1,31 @@
 package org.demons.gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 
+import org.demons.test.PinListings;
 import org.demons.utils.MegaConstants;
+import org.jfree.ui.about.SystemPropertiesTableModel;
 import org.zu.ardulink.Link;
 import org.zu.ardulink.event.AnalogReadChangeEvent;
 import org.zu.ardulink.event.AnalogReadChangeListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
 
-import sun.awt.RepaintArea;
+import com.sun.xml.internal.bind.v2.runtime.Name;
+
 
 public class ArduinoStatSummary extends JPanel {
 	private static final long serialVersionUID = -2739228960818599179L;
@@ -24,25 +33,37 @@ public class ArduinoStatSummary extends JPanel {
 	private Link link = null;
 	
 	private final int PADDING = 25;
+	private final int PIN_READ_TIME = 100;
 	
 	private Font titleFont, regularFont, tableFont;
 	
 	private JLabel title, stat;
 	private JPanel descBar;
-	private JScrollPane list = null;
-	private int digitalPin = 0;
-	private int analogPin = 0;
+	private JPanel list;
+	private JScrollPane scrollPane;
+	
+	private Timer pinReader;
+	private int pinIterator = 0;
+	private int digitalPin, analogPin;
+	private final int TOTAL_PINS = MegaConstants.DIGITAL_INPUT_PIN_MAX + MegaConstants.ANALOG_INPUT_PIN_MAX + 2;
+	private boolean digitalOn = false, analogOn = false;
+	private DigitalReadChangeListener drcl;
+	private AnalogReadChangeListener arcl;
 	
 	class Listing extends JPanel {
 		JLabel nameLabel, valLabel;
 		
 		Listing(String name, String val) {
 			super();
-			setSize(list.getWidth(), list.getHeight());
+			setFont(tableFont);
+			setSize(list.getWidth(), 700);
 			setLayout(new GridLayout(1, 2));
 			
 			nameLabel = new JLabel(name);
 			valLabel = new JLabel(val);
+			
+			add(nameLabel);
+			add(valLabel);
 		}
 		
 		protected JLabel getNameLabel() {
@@ -85,16 +106,30 @@ public class ArduinoStatSummary extends JPanel {
 		descBar.add(right);
 		descBar.setBounds(PADDING, PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, tableFont.getSize()+2);
 		
-		list = new JScrollPane();
-		list.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		list.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
-		list.setOpaque(false);
-		list.getViewport().setOpaque(false);
+		pinListings = new Listing[TOTAL_PINS];
+		
+		list = new JPanel();
+		list.setLayout(new GridLayout(pinListings.length, 1));
+		
+		for(int i = 0; i < pinListings.length; i++) {
+			if(i <= MegaConstants.DIGITAL_INPUT_PIN_MAX) {
+				pinListings[i] = new Listing("DIGITAL " + i, "LOW");
+			} else {
+				int pin = i - MegaConstants.DIGITAL_INPUT_PIN_MAX - 1;
+				pinListings[i] = new Listing("ANALOG " + pin, "0");
+			}
+			pinListings[i].setBounds(0, i*20, width, 20);
+			list.add(pinListings[i]);
+		}
+		
+		scrollPane = new JScrollPane(list);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
 		
 		add(title);
 		add(stat);
 		add(descBar);
-		add(list);
+		add(scrollPane);
 		
 		repaint();
 	}
@@ -106,7 +141,9 @@ public class ArduinoStatSummary extends JPanel {
 		title.setBounds(PADDING, PADDING, width-2*PADDING, f.getSize());
 		stat.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, regularFont.getSize()+PADDING);
 		descBar.setBounds(PADDING, PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, tableFont.getSize()+2);
-		list.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
+		scrollPane.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
+		
+		repaint();
 	}
 	
 	public void setLink(Link l) {
@@ -118,47 +155,33 @@ public class ArduinoStatSummary extends JPanel {
 	}
 	
 	public void showSummary() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if(link != null && link.isConnected()) {
-					pinListings = new Listing[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
+		if(link != null && link.isConnected()) {
+			
+			
+			/*
+			DigitalReadChangeListener[] drgl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
+			for(int i = 0; i < drgl.length; i++) {
+				digitalPin = i;
+				drgl[i] = new DigitalReadChangeListener() {
+					private int pinNumber = digitalPin;
 					
-					for(digitalPin = 0; digitalPin <= MegaConstants.DIGITAL_INPUT_PIN_MAX; digitalPin++) {
-						DigitalReadChangeListener drgl = new DigitalReadChangeListener() {
-							@Override
-							public void stateChanged(DigitalReadChangeEvent e) {
-								int value = e.getValue();
-								pinListings[digitalPin] = new Listing("DIGITAL " + digitalPin, (value == DigitalReadChangeEvent.POWER_HIGH) ? "HIGH" : "LOW");
-							}
-							
-							@Override
-							public int getPinListening() {
-								return digitalPin;
-							}
-						};
-						
-						link.addDigitalReadChangeListener(drgl);
-						
-						try {
-							Thread.sleep(5);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-						
-						link.removeDigitalReadChangeListener(drgl);
+					@Override
+					public void stateChanged(DigitalReadChangeEvent e) {
+						int value = e.getValue();
+						int key = pinNumber;
+						pinListings[key].getValLabel().setText(value == DigitalReadChangeEvent.POWER_HIGH ? "HIGH" : "LOW");
+						System.out.println(key + " " + value);
 					}
-				}
-				
-				list.removeAll();
-				for(Listing pinListing : pinListings) {
-					if(pinListing != null)
-						list.add(pinListing);
-				}
-				
-				repaint();
+					
+					@Override
+					public int getPinListening() {
+						return pinNumber;
+					}
+				};
+				link.addDigitalReadChangeListener(drgl[i]);
 			}
-		}).start();
+			*/
+		}
 	}
 	
 	@Override

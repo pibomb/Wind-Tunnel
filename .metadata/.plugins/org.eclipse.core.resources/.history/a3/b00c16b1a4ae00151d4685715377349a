@@ -1,0 +1,119 @@
+package org.demons.test;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+
+import org.zu.ardulink.Link;
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.gui.Linkable;
+import org.zu.ardulink.gui.facility.IntMinMaxModel;
+import org.zu.ardulink.protocol.ReplyMessageCallback;
+
+/**
+ * [ardulinktitle] [ardulinkversion]
+ * This class implements the DigitalReadChangeListener interface and is able to listen
+ * events coming from arduino board about digital pin state change.
+ * @author Luciano Zu project Ardulink http://www.ardulink.org/
+ * @DigitalReadChangeListener
+ * [adsense]
+ *
+ */
+public class DigitalPinStatus extends JPanel implements ActionListener {
+
+
+	private static final long serialVersionUID = -7773514191770737230L;
+
+	private JLabel lblStatelabel;
+	private JToggleButton tglbtnSensor;
+	private IntMinMaxModel pinComboBoxModel;
+	private JLabel lblPin;
+	
+	private Link link = Link.getDefaultInstance();
+	
+	private static final String HIGH = "High";
+	private static final String LOW = "Low";
+	
+	private JPanel comboPanel;
+	
+	private DigitalReadChangeListener drcl;
+
+	/**
+	 * Create the panel.
+	 */
+	public DigitalPinStatus() {
+		setLayout(new GridLayout(3, 1, 0, 0));
+		
+		lblStatelabel = new JLabel(LOW);
+		lblStatelabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblStatelabel);
+		
+		comboPanel = new JPanel();
+		add(comboPanel);
+
+		lblPin = new JLabel("Pin: 2");
+		comboPanel.add(lblPin);
+		
+		drcl = new DigitalReadChangeListener() {
+			@Override
+			public void stateChanged(DigitalReadChangeEvent e) {
+				int value = e.getValue();
+				if(value == DigitalReadChangeEvent.POWER_HIGH) {
+					lblStatelabel.setText(HIGH);
+					System.out.println(HIGH);
+				} else if(value == DigitalReadChangeEvent.POWER_LOW) {
+					lblStatelabel.setText(LOW);
+					System.out.println(LOW);
+				}
+				repaint();
+			}
+			
+			@Override
+			public int getPinListening() {
+				return 2;
+			}
+		};
+		
+		JButton b = new JButton("ON");
+		b.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				link.addDigitalReadChangeListener(drcl);
+				getParent().setEnabled(false);
+			}
+		});
+		add(b);
+		
+	}
+
+	public void setPin(int pin) {
+		pinComboBoxModel.setSelectedItem(pin);
+	}
+
+	public void setLink(Link link) {
+		if(this.link != null) {
+			this.link.removeDigitalReadChangeListener((DigitalReadChangeListener)tglbtnSensor.getParent());
+		}
+		tglbtnSensor.setText("Sensor off");
+
+		lblStatelabel.setEnabled(false);
+		this.link = link;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		link.addDigitalReadChangeListener(drcl);
+		getParent().setEnabled(false);
+	}
+}
