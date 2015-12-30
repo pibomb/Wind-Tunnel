@@ -9,18 +9,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import org.demons.gui.ArduinoStatSummary.Listing;
 import org.zu.ardulink.Link;
 import org.zu.ardulink.RawDataListener;
+import org.zu.ardulink.event.ConnectionEvent;
+import org.zu.ardulink.event.ConnectionListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.event.DisconnectionEvent;
 import org.zu.ardulink.gui.ConnectionStatus;
 import org.zu.ardulink.gui.DigitalPinStatus;
 import org.zu.ardulink.gui.SerialConnectionPanel;
 import org.zu.ardulink.gui.SwitchController;
+
+import com.sun.corba.se.spi.orbutil.fsm.Action;
 
 public class ArduinoCommunicationPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -2739228960818599179L;
@@ -30,13 +36,11 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 	private final int PADDING = 25;
 	private final int DOT_RADIUS = 50;
 	
-	private final SerialConnectionPanel serialConnectionPanel;
+	private SerialConnectionPanel serialConnectionPanel;
 	private JButton btnConnect;
 	private JButton btnDisconnect;
 	
-	private boolean isBuilt = false;
-	
-	public ArduinoCommunicationPanel(int width, int height) {
+	public ArduinoCommunicationPanel(int width, int height, ActionListener parent) {
 		super();
 		
 		setSize(width, height);
@@ -62,20 +66,40 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		add(connectPanel, BorderLayout.SOUTH);
 
 		btnConnect = new JButton("Connect");
+		btnConnect.setActionCommand("CONNECT");
 		btnConnect.addActionListener(this);
 		connectPanel.add(btnConnect);
 		
-		btnDisconnect = new JButton("Disconnect");
-		btnDisconnect.addActionListener(this);
+		btnDisconnect = new JButton("Access");
+		btnDisconnect.setActionCommand("ACCESS");
+		btnDisconnect.addActionListener(parent);
 		connectPanel.add(btnDisconnect);
-		
-		isBuilt = true;
 		
 		repaint();
 	}
 	
 	public void setLink(Link l) {
 		link = l;
+		
+		link.addConnectionListener(new ConnectionListener() {
+			@Override
+			public void disconnected(DisconnectionEvent arg0) {
+				btnConnect.setText("Connect");
+				btnConnect.setActionCommand("CONNECT");
+				repaint();
+			}
+			
+			@Override
+			public void connected(ConnectionEvent arg0) {
+				btnConnect.setText("Disconnect");
+				btnConnect.setActionCommand("DISCONNECT");
+				repaint();
+			}
+		});
+	}
+	
+	public SerialConnectionPanel getSerialConnectionPanel() {
+		return serialConnectionPanel;
 	}
 	
 	@Override
@@ -92,16 +116,15 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		}
 		g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnConnect) {
+		if(e.getActionCommand().equals("CONNECT")) {
 			String comPort = serialConnectionPanel.getConnectionPort();
 			String baudRateS = serialConnectionPanel.getBaudRate();
 					
 			try {
-				int baudRate = Integer.parseInt(baudRateS);
-									
+				int baudRate = Integer.parseInt(baudRateS);				
 				link.connect(comPort, baudRate);
 			} catch(Exception ex) {
 				ex.printStackTrace();
@@ -109,11 +132,16 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 				if(message == null || message.trim().equals("")) {
 					message = "Generic Error on connection";
 				}
-				JOptionPane.showMessageDialog(btnConnect, message, "Error", JOptionPane.ERROR_MESSAGE);
 			}
-		} else if(e.getSource() == btnDisconnect) {
+			
+			if(link.isConnected()) {
+				btnConnect.setText("Disconnect");
+				btnConnect.setActionCommand("DISCONNECT");
+			}
+		} else if(e.getActionCommand().equals("DISCONNECT")) {
 			link.disconnect();
+			btnConnect.setText("Connect");
+			btnConnect.setActionCommand("CONNECT");
 		}
-		repaint();
 	}
 }

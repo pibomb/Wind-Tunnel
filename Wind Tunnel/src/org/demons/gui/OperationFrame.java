@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
 
-public class OperationFrame extends JFrame implements ActionListener {
+public class OperationFrame extends JPanel implements ActionListener {
 	// Generated Serial Version UID
 	private static final long serialVersionUID = -3754531649923171524L;
 	
@@ -18,7 +21,7 @@ public class OperationFrame extends JFrame implements ActionListener {
 	 * List of panels of the GUI
 	 * Panel Hierarchy:
 	 * 
-	 * content
+	 * OperationFrame
 	 * 	> left
 	 * 	> center
 	 * 		- wtgd (WindTunnelGraphicsDisplay)
@@ -29,7 +32,6 @@ public class OperationFrame extends JFrame implements ActionListener {
 	 * 		- ass (ArduinoStatSummary)
 	 * 		- apm (ArduinoPinManager)
 	 */
-	private JPanel content;
 	private JPanel left, center, right;
 	
 	private HistoryValuesPanel hvp;
@@ -49,30 +51,20 @@ public class OperationFrame extends JFrame implements ActionListener {
 	private Link link = Link.getDefaultInstance();
 	
 	private Timer timer;
-	private final int REFRESH_RATE = 100;
+	private final int REFRESH_RATE = 1000;
+	
+	private DigitalReadChangeListener[] drcl;
+	private int digitalPin;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
 	// Class constructor
 	public OperationFrame() {
-		super("Maxwell's Demons");
-		
-		// Set to fullscreen
-		setExtendedState(MAXIMIZED_BOTH);
-		setUndecorated(true);
-		
-		// Quit when screen is closed
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		super();
 		
 		// Initialize components
 		initContent();
 		setupLink();
-		
-		//timer = new Timer(REFRESH_RATE, this);
-		//timer.start();
-		
-		// Make frame visible
-		setVisible(true);
 	}
 	
 	private void initContent() {
@@ -84,9 +76,8 @@ public class OperationFrame extends JFrame implements ActionListener {
 		int spc = 1;
 		
 		// Set content panel
-		content = new JPanel();
-		content.setLayout(null);
-		content.setBounds(0, 0, width, height);
+		setLayout(null);
+		setBounds(0, 0, width, height);
 		
 		// Initialize the left, center, and right panels
 		left = new JPanel();
@@ -128,7 +119,7 @@ public class OperationFrame extends JFrame implements ActionListener {
 		center.add(csl);
 		center.add(sp);
 		
-		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3);
+		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3, (ActionListener)this);
 		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3, titleFont);
 		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3);
 		
@@ -136,17 +127,13 @@ public class OperationFrame extends JFrame implements ActionListener {
 		right.add(ass);
 		right.add(apm);
 		
-		// Add components to content		
-		content.add(left);
-		content.add(center);
-		content.add(right);
+		// Add components to content
+		add(left);
+		add(center);
+		add(right);
 		
-		content.add(divL);
-		content.add(divR);
-		
-		// Use content as the content pane
-		setContentPane(content);
-		pack();
+		add(divL);
+		add(divR);
 	}
 	
 	void setupLink() {
@@ -156,8 +143,36 @@ public class OperationFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == timer) {
-			ass.showSummary();
+		if(e.getActionCommand() == "ACCESS") {
+			System.out.println("ACCESS");
+			if(link != null && link.isConnected()) {
+				drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
+				for(int i = 2; i < drcl.length; i++) {
+					digitalPin = i;
+					drcl[i] = new DigitalReadChangeListener() {
+						int pin = digitalPin;
+						
+						@Override
+						public void stateChanged(DigitalReadChangeEvent e) {
+							int value = e.getValue();
+							System.out.print(pin + " ");
+							
+							if(value == DigitalReadChangeEvent.POWER_HIGH) {
+								System.out.println("HIGH");
+							} else if(value == DigitalReadChangeEvent.POWER_LOW) {
+								System.out.println("LOW");
+							}
+							repaint();
+						}
+						
+						@Override
+						public int getPinListening() {
+							return pin;
+						}
+					};
+					link.addDigitalReadChangeListener(drcl[i]);
+				}
+			}
 		}
 	}
 }

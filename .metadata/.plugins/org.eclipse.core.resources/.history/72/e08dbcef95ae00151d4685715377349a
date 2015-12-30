@@ -1,0 +1,229 @@
+package org.demons.gui;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.Timer;
+
+import org.demons.test.PinListings;
+import org.demons.utils.MegaConstants;
+import org.zu.ardulink.Link;
+import org.zu.ardulink.event.AnalogReadChangeEvent;
+import org.zu.ardulink.event.AnalogReadChangeListener;
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
+
+import com.sun.xml.internal.bind.v2.runtime.Name;
+
+
+public class ArduinoStatSummary extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -2739228960818599179L;
+	
+	private Link link = null;
+	
+	private final int PADDING = 25;
+	private final int PIN_READ_TIME = 5;
+	
+	private Font titleFont, regularFont, tableFont;
+	
+	private JLabel title, stat;
+	private JPanel descBar;
+	private JPanel list;
+	private JScrollPane scrollPane;
+	
+	private Timer pinReader;
+	private int pinIterator = 0;
+	private int digitalPin, analogPin;
+	private final int TOTAL_PINS = MegaConstants.DIGITAL_INPUT_PIN_MAX + MegaConstants.ANALOG_INPUT_PIN_MAX + 2;
+	private boolean digitalOn = false, analogOn = false;
+	private DigitalReadChangeListener drcl;
+	private AnalogReadChangeListener arcl;
+	
+	class Listing extends JPanel {
+		JLabel nameLabel, valLabel;
+		
+		Listing(String name, String val) {
+			super();
+			setFont(tableFont);
+			setSize(list.getWidth(), 700);
+			setLayout(new GridLayout(1, 2));
+			
+			nameLabel = new JLabel(name);
+			valLabel = new JLabel(val);
+			
+			add(nameLabel);
+			add(valLabel);
+		}
+		
+		protected JLabel getNameLabel() {
+			return nameLabel;
+		}
+		
+		protected JLabel getValLabel() {
+			return valLabel;
+		}
+	}
+	
+	private Listing[] pinListings;
+	
+	public ArduinoStatSummary(int width, int height) {
+		super();
+		
+		setLayout(null);
+		setSize(width, height);
+		
+		titleFont = new Font("Century", Font.BOLD, 14);
+		regularFont = new Font("Dialog", Font.BOLD, 14);
+		tableFont = new Font("Dialog", Font.BOLD, 12);
+		
+		title = new JLabel("ARDUINO STAT SUMMARY", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, 15);
+		title.setForeground(Color.BLUE);
+		
+		stat = new JLabel("Port: ");
+		stat.setFont(regularFont);
+		stat.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, regularFont.getSize()+PADDING);
+		
+		descBar = new JPanel();
+		descBar.setLayout(new GridLayout(1, 2));
+		JLabel left = new JLabel("Arduino Pin");
+		left.setFont(tableFont);
+		JLabel right = new JLabel("Value");
+		right.setFont(tableFont);
+		descBar.add(left);
+		descBar.add(right);
+		descBar.setBounds(PADDING, PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, tableFont.getSize()+2);
+		
+		pinListings = new Listing[TOTAL_PINS];
+		
+		list = new JPanel();
+		list.setLayout(new GridLayout(pinListings.length, 1));
+		
+		for(int i = 0; i < pinListings.length; i++) {
+			if(i <= MegaConstants.DIGITAL_INPUT_PIN_MAX) {
+				pinListings[i] = new Listing("DIGITAL " + i, "LOW");
+			} else {
+				int pin = i - MegaConstants.DIGITAL_INPUT_PIN_MAX - 1;
+				pinListings[i] = new Listing("ANALOG " + pin, "0");
+			}
+			pinListings[i].setBounds(0, i*20, width, 20);
+			list.add(pinListings[i]);
+		}
+		
+		scrollPane = new JScrollPane(list);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
+		
+		add(title);
+		add(stat);
+		add(descBar);
+		add(scrollPane);
+		
+		repaint();
+	}
+	
+	public ArduinoStatSummary(int width, int height, Font f) {
+		this(width, height);
+		titleFont = f;
+		title.setFont(f);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, f.getSize());
+		stat.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, regularFont.getSize()+PADDING);
+		descBar.setBounds(PADDING, PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, tableFont.getSize()+2);
+		scrollPane.setBounds(PADDING, 2*PADDING+title.getHeight()+stat.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-stat.getHeight()-descBar.getHeight());
+		
+		repaint();
+	}
+	
+	public void setLink(Link l) {
+		link = l;
+	}
+	
+	public void setPortStatus(String msg) {
+		stat.setText("Port: " + msg);
+	}
+	
+	public void showSummary() {
+		if(link != null && link.isConnected()) {
+			pinReader = new Timer(PIN_READ_TIME, this);
+			pinReader.start();
+		}
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(new Color(128, 128, 255));
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == pinReader) {
+			System.out.println(1);
+			if(digitalOn) {
+				link.removeDigitalReadChangeListener(drcl);
+				digitalOn = false;
+			}
+			if(analogOn) {
+				link.removeAnalogReadChangeListener(arcl);
+				analogOn = false;
+			}
+			
+			if(pinIterator <= MegaConstants.DIGITAL_INPUT_PIN_MAX) {
+				digitalPin = pinIterator;
+				drcl = new DigitalReadChangeListener() {
+					@Override
+					public void stateChanged(DigitalReadChangeEvent e) {
+						int value = e.getValue();
+						pinListings[pinIterator] = new Listing("DIGITAL " + digitalPin, (value == DigitalReadChangeEvent.POWER_HIGH) ? "HIGH" : "LOW");
+					}
+					
+					@Override
+					public int getPinListening() {
+						return digitalPin;
+					}
+				};
+				link.addDigitalReadChangeListener(drcl);
+				digitalOn = true;
+			} else {
+				analogPin = pinIterator - MegaConstants.DIGITAL_INPUT_PIN_MAX-1;
+				arcl = new AnalogReadChangeListener() {
+					@Override
+					public void stateChanged(AnalogReadChangeEvent e) {
+						int value = e.getValue();
+						pinListings[pinIterator] = new Listing("ANALOG " + analogPin, ((Integer)value).toString());
+					}
+					
+					@Override
+					public int getPinListening() {
+						return digitalPin;
+					}
+				};
+				link.addAnalogReadChangeListener(arcl);
+			}
+			
+			pinIterator++;
+		}
+		
+		if(pinIterator >= TOTAL_PINS) {
+			pinReader.stop();
+			for(Listing listing : pinListings) {
+				list.add(listing);
+			}
+			
+			pinIterator = 0;
+		}
+	}
+}
