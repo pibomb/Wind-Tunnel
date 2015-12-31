@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
+import org.zu.ardulink.RawDataListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
 
@@ -145,33 +146,44 @@ public class OperationFrame extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == "ACCESS") {
 			System.out.println("ACCESS");
+			
 			if(link != null && link.isConnected()) {
-				drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
-				for(int i = 2; i < drcl.length; i++) {
-					digitalPin = i;
-					drcl[i] = new DigitalReadChangeListener() {
-						int pin = digitalPin;
-						
-						@Override
-						public void stateChanged(DigitalReadChangeEvent e) {
-							int value = e.getValue();
-							System.out.print(pin + " ");
-							
-							if(value == DigitalReadChangeEvent.POWER_HIGH) {
-								System.out.println("HIGH");
-							} else if(value == DigitalReadChangeEvent.POWER_LOW) {
-								System.out.println("LOW");
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
+						for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
+							digitalPin = i;
+							drcl[i] = new DigitalReadChangeListener() {
+								int pin = digitalPin;
+								
+								@Override
+								public void stateChanged(DigitalReadChangeEvent e) {
+									int value = e.getValue();
+									System.out.print(pin + " ");
+									
+									if(value == DigitalReadChangeEvent.POWER_HIGH) {
+										System.out.println("HIGH");
+									} else if(value == DigitalReadChangeEvent.POWER_LOW) {
+										System.out.println("LOW");
+									}
+									repaint();
+								}
+								
+								@Override
+								public int getPinListening() {
+									return pin;
+								}
+							};
+							link.addDigitalReadChangeListener(drcl[i]);
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
 							}
-							repaint();
 						}
-						
-						@Override
-						public int getPinListening() {
-							return pin;
-						}
-					};
-					link.addDigitalReadChangeListener(drcl[i]);
-				}
+					}
+				}).start();
 			}
 		}
 	}

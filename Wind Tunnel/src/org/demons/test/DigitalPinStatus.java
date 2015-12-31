@@ -1,5 +1,6 @@
 package org.demons.test;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +12,7 @@ import javax.swing.JToggleButton;
 import org.zu.ardulink.Link;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.gui.SwitchController;
 
 public class DigitalPinStatus extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -7773514191770737230L;
@@ -41,7 +43,7 @@ public class DigitalPinStatus extends JPanel implements ActionListener {
 			
 			@Override
 			public int getPinListening() {
-				return 2;
+				return 52;
 			}
 		};
 		
@@ -49,6 +51,9 @@ public class DigitalPinStatus extends JPanel implements ActionListener {
 		b.addActionListener(this);
 		add(b);
 		
+		SwitchController switchController = new SwitchController();
+		add(switchController);
+		switchController.setPin(53);
 	}
 	
 	@Override

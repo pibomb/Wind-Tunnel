@@ -49,8 +49,8 @@ void setup() {
   }
 
   // Turn off everything (not on RXTX)
-  for (index = 2; index < digitalPinListeningNum; index++) {
-    pinMode(index, OUTPUT);
+  for (index = 0; index <= digitalPinListeningNum; index++) {
+    pinMode(index, INPUT);
     digitalWrite(index, LOW);
   }
   
