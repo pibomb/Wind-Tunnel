@@ -23,6 +23,7 @@ import org.zu.ardulink.event.AnalogReadChangeEvent;
 import org.zu.ardulink.event.AnalogReadChangeListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.protocol.IProtocol;
 
 import com.sun.xml.internal.bind.v2.runtime.Name;
 
@@ -154,33 +155,11 @@ public class ArduinoStatSummary extends JPanel {
 		stat.setText("Port: " + msg);
 	}
 	
-	public void showSummary() {
-		if(link != null && link.isConnected()) {
-			
-			
-			/*
-			DigitalReadChangeListener[] drgl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
-			for(int i = 0; i < drgl.length; i++) {
-				digitalPin = i;
-				drgl[i] = new DigitalReadChangeListener() {
-					private int pinNumber = digitalPin;
-					
-					@Override
-					public void stateChanged(DigitalReadChangeEvent e) {
-						int value = e.getValue();
-						int key = pinNumber;
-						pinListings[key].getValLabel().setText(value == DigitalReadChangeEvent.POWER_HIGH ? "HIGH" : "LOW");
-						System.out.println(key + " " + value);
-					}
-					
-					@Override
-					public int getPinListening() {
-						return pinNumber;
-					}
-				};
-				link.addDigitalReadChangeListener(drgl[i]);
-			}
-			*/
+	public void setInfo(int key, int val) {
+		if(key <= MegaConstants.DIGITAL_INPUT_PIN_MAX) {
+			pinListings[key].getValLabel().setText(val == IProtocol.HIGH ? "HIGH" : "LOW");
+		} else {
+			pinListings[key].getValLabel().setText(((Integer)val).toString());
 		}
 	}
 	
