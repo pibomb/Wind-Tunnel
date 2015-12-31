@@ -75,7 +75,6 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		btnAccess = new JButton("Access");
 		btnAccess.setActionCommand("ACCESS");
 		btnAccess.addActionListener(parent);
-		btnAccess.addActionListener(this);
 		connectPanel.add(btnAccess);
 		
 		repaint();
@@ -145,9 +144,6 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 			link.disconnect();
 			btnConnect.setText("Connect");
 			btnConnect.setActionCommand("CONNECT");
-			accessed = false;
-		} else if(e.getSource() == btnAccess) {
-			accessed = true;
 		}
 	}
 }
