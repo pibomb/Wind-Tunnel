@@ -38,9 +38,7 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 	
 	private SerialConnectionPanel serialConnectionPanel;
 	private JButton btnConnect;
-	private JButton btnAccess;
-	
-	private boolean accessed = false;
+	private JButton btnDisconnect;
 	
 	public ArduinoCommunicationPanel(int width, int height, ActionListener parent) {
 		super();
@@ -72,11 +70,10 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		btnConnect.addActionListener(this);
 		connectPanel.add(btnConnect);
 		
-		btnAccess = new JButton("Access");
-		btnAccess.setActionCommand("ACCESS");
-		btnAccess.addActionListener(parent);
-		btnAccess.addActionListener(this);
-		connectPanel.add(btnAccess);
+		btnDisconnect = new JButton("Access");
+		btnDisconnect.setActionCommand("ACCESS");
+		btnDisconnect.addActionListener(parent);
+		connectPanel.add(btnDisconnect);
 		
 		repaint();
 	}
@@ -112,7 +109,7 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		g.setColor(new Color(128, 255, 128));
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(accessed) {
+		if(link != null && link.isConnected()) {
 			g.setColor(Color.GREEN);
 		} else {
 			g.setColor(Color.RED);
@@ -145,9 +142,6 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 			link.disconnect();
 			btnConnect.setText("Connect");
 			btnConnect.setActionCommand("CONNECT");
-			accessed = false;
-		} else if(e.getSource() == btnAccess) {
-			accessed = true;
 		}
 	}
 }

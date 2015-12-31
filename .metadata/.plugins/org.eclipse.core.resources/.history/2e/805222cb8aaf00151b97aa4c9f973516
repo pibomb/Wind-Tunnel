@@ -34,6 +34,7 @@ public class ArduinoStatSummary extends JPanel {
 	private Link link = null;
 	
 	private final int PADDING = 25;
+	private final int PIN_READ_TIME = 100;
 	
 	private Font titleFont, regularFont, tableFont;
 	
@@ -42,7 +43,13 @@ public class ArduinoStatSummary extends JPanel {
 	private JPanel list;
 	private JScrollPane scrollPane;
 	
+	private Timer pinReader;
+	private int pinIterator = 0;
+	private int digitalPin, analogPin;
 	private final int TOTAL_PINS = MegaConstants.DIGITAL_INPUT_PIN_MAX + MegaConstants.ANALOG_INPUT_PIN_MAX + 2;
+	private boolean digitalOn = false, analogOn = false;
+	private DigitalReadChangeListener drcl;
+	private AnalogReadChangeListener arcl;
 	
 	class Listing extends JPanel {
 		JLabel nameLabel, valLabel;

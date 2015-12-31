@@ -33,7 +33,6 @@
 <fullyQualifiedTypeName name="org.zu.ardulink.connection.proxy.NetworkProxyServer.StopCommand"/>
 <fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="javax.xml.bind.Marshaller.Listener"/>
-<fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeListener"/>
 <fullyQualifiedTypeName name="com.sun.xml.internal.bind.v2.runtime.Name"/>
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
@@ -52,6 +51,8 @@
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.ConnectionListener"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.DigitalReadChangeListener"/>
-<fullyQualifiedTypeName name="org.demons.utils.MegaConstants"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeListener"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="org.demons.utils.MegaConstants"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeEvent"/>
 </qualifiedTypeNameHistroy>

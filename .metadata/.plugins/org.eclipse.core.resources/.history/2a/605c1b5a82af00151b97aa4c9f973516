@@ -11,8 +11,6 @@ import javax.swing.*;
 import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
 import org.zu.ardulink.RawDataListener;
-import org.zu.ardulink.event.AnalogReadChangeEvent;
-import org.zu.ardulink.event.AnalogReadChangeListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
 
@@ -57,9 +55,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 	private final int REFRESH_RATE = 1000;
 	
 	private DigitalReadChangeListener[] drcl;
-	private AnalogReadChangeListener[] arcl;
-	private int digitalPin, analogPin;
-	private final int PIN_SETUP_TIME = 10;
+	private int digitalPin;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
@@ -143,6 +139,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 	
 	void setupLink() {
 		acp.setLink(link);
+		ass.setLink(link);
 	}
 
 	@Override
@@ -170,8 +167,6 @@ public class OperationFrame extends JPanel implements ActionListener {
 									} else if(value == DigitalReadChangeEvent.POWER_LOW) {
 										System.out.println("LOW");
 									}
-									
-									ass.setInfo(pin, value);
 									repaint();
 								}
 								
@@ -182,36 +177,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 							};
 							link.addDigitalReadChangeListener(drcl[i]);
 							try {
-								Thread.sleep(PIN_SETUP_TIME);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						arcl = new AnalogReadChangeListener[MegaConstants.ANALOG_INPUT_PIN_MAX+1];
-						for(int i = 0; i <= MegaConstants.ANALOG_INPUT_PIN_MAX; i++) {
-							analogPin = i;
-							arcl[i] = new AnalogReadChangeListener() {
-								int pin = analogPin;
-								
-								@Override
-								public void stateChanged(AnalogReadChangeEvent e) {
-									int value = e.getValue();
-									System.out.print(pin + " ");
-									
-									System.out.println(value);
-									
-									ass.setInfo(MegaConstants.DIGITAL_INPUT_PIN_MAX+1+pin, value);
-									repaint();
-								}
-								
-								@Override
-								public int getPinListening() {
-									return pin;
-								}
-							};
-							link.addAnalogReadChangeListener(arcl[i]);
-							try {
-								Thread.sleep(PIN_SETUP_TIME);
+								Thread.sleep(100);
 							} catch (InterruptedException e1) {
 								e1.printStackTrace();
 							}

@@ -26,8 +26,8 @@ your needs.
 String inputString = "";         // a string to hold incoming data (this is general code you can reuse)
 boolean stringComplete = false;  // whether the string is complete (this is general code you can reuse)
 
-#define digitalPinListeningNum 53 // Change 53 if you have a different number of pins.
-#define analogPinListeningNum 15 // Change 15 if you have a different number of pins.
+#define digitalPinListeningNum 54 // Change 54 if you have a different number of pins.
+#define analogPinListeningNum 16 // Change 16 if you have a different number of pins.
 boolean digitalPinListening[digitalPinListeningNum]; // Array used to know which pins on the Arduino must be listening.
 boolean analogPinListening[analogPinListeningNum]; // Array used to know which pins on the Arduino must be listening.
 int digitalPinListenedValue[digitalPinListeningNum]; // Array used to know which value is read last time.
@@ -49,8 +49,8 @@ void setup() {
   }
 
   // Turn off everything (not on RXTX)
-  for (index = 0; index <= digitalPinListeningNum; index++) {
-    pinMode(index, INPUT);
+  for (index = 0; index < digitalPinListeningNum; index++) {
+    pinMode(index, OUTPUT);
     digitalWrite(index, LOW);
   }
   
