@@ -154,6 +154,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
+						System.out.println("RUN");
 						drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
 						for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
 							digitalPin = i;
