@@ -113,11 +113,12 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		if(accessed) {
-			g.setColor(Color.GREEN);
+			g.setColor(new Color(0, 212, 0));
+			g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
 		} else {
 			g.setColor(Color.RED);
+			g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
 		}
-		g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
 	}
 
 	@Override

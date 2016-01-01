@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.Timer;
 
 import org.demons.test.PinListings;
@@ -49,14 +50,18 @@ public class ArduinoStatSummary extends JPanel {
 		
 		Listing(String name, String val) {
 			super();
-			setFont(tableFont);
-			setSize(list.getWidth(), 700);
+			
+			setSize(list.getWidth(), 100);
 			setLayout(new GridLayout(1, 2));
 			
 			nameLabel = new JLabel(name);
 			valLabel = new JLabel(val);
 			
+			nameLabel.setFont(tableFont);
+			valLabel.setFont(tableFont);
+			
 			add(nameLabel);
+			add(new JSeparator(JSeparator.VERTICAL));
 			add(valLabel);
 		}
 		
@@ -91,12 +96,13 @@ public class ArduinoStatSummary extends JPanel {
 		stat.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, regularFont.getSize()+PADDING);
 		
 		descBar = new JPanel();
-		descBar.setLayout(new GridLayout(1, 2));
+		descBar.setLayout(new GridLayout(1, 3));
 		JLabel left = new JLabel("Arduino Pin");
 		left.setFont(tableFont);
 		JLabel right = new JLabel("Value");
 		right.setFont(tableFont);
 		descBar.add(left);
+		descBar.add(new JSeparator(JSeparator.VERTICAL));
 		descBar.add(right);
 		descBar.setBounds(PADDING, PADDING+title.getHeight()+stat.getHeight(), width-2*PADDING, tableFont.getSize()+2);
 		
