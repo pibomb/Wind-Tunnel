@@ -1,24 +1,46 @@
 package org.demons.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import org.zu.ardulink.Link;
 
 class ArduinoPinManager extends JPanel {
 	private static final long serialVersionUID = -2739228960818599179L;
 	
-	private Link link = Link.getDefaultInstance();
+	private Link link = null;
 	
-	public ArduinoPinManager(int width, int height) {
+	private final int PADDING = 25;
+	
+	private JLabel title;
+	private JPanel fnPanel;
+	
+	public ArduinoPinManager(int width, int height, Font titleFont) {
 		super();
 		
-		setLayout(null);
 		setSize(width, height);
+		setBorder(new EmptyBorder(PADDING, PADDING, PADDING, PADDING));
+		setLayout(null);
+		
+		title = new JLabel("ARDUINO PIN MANAGER", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, titleFont.getSize()+2);
+		title.setForeground(Color.RED);
+		add(title);
+		
 		repaint();
 	}
 	
+	public void setLink(Link l) {
+		link = l;
+	}
+	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		

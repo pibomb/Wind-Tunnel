@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import org.demons.ctrl.WindSpeedDisplay;
 import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
 import org.zu.ardulink.RawDataListener;
@@ -15,6 +16,8 @@ import org.zu.ardulink.event.AnalogReadChangeEvent;
 import org.zu.ardulink.event.AnalogReadChangeListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
 import org.zu.ardulink.event.DigitalReadChangeListener;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class OperationFrame extends JPanel implements ActionListener {
 	// Generated Serial Version UID
@@ -54,12 +57,14 @@ public class OperationFrame extends JPanel implements ActionListener {
 	private Link link = Link.getDefaultInstance();
 	
 	private Timer timer;
-	private final int REFRESH_RATE = 1000;
+	private final int REFRESH_RATE = 50;
 	
 	private DigitalReadChangeListener[] drcl;
 	private AnalogReadChangeListener[] arcl;
 	private int digitalPin, analogPin;
 	private final int PIN_SETUP_TIME = 10;
+	
+	private WindSpeedDisplay wsd;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
@@ -70,6 +75,8 @@ public class OperationFrame extends JPanel implements ActionListener {
 		// Initialize components
 		initContent();
 		setupLink();
+		
+		timer = new Timer(REFRESH_RATE, this);
 	}
 	
 	private void initContent() {
@@ -124,9 +131,9 @@ public class OperationFrame extends JPanel implements ActionListener {
 		center.add(csl);
 		center.add(sp);
 		
-		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3, (ActionListener)this);
+		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3, titleFont, (ActionListener)this);
 		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3, titleFont);
-		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3);
+		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3, titleFont);
 		
 		right.add(acp);
 		right.add(ass);
@@ -143,6 +150,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 	
 	void setupLink() {
 		acp.setLink(link);
+		apm.setLink(link);
 	}
 
 	@Override
@@ -164,13 +172,6 @@ public class OperationFrame extends JPanel implements ActionListener {
 								@Override
 								public void stateChanged(DigitalReadChangeEvent e) {
 									int value = e.getValue();
-									System.out.print(pin + " ");
-									
-									if(value == DigitalReadChangeEvent.POWER_HIGH) {
-										System.out.println("HIGH");
-									} else if(value == DigitalReadChangeEvent.POWER_LOW) {
-										System.out.println("LOW");
-									}
 									
 									ass.setInfo(pin, value);
 									repaint();
@@ -197,9 +198,6 @@ public class OperationFrame extends JPanel implements ActionListener {
 								@Override
 								public void stateChanged(AnalogReadChangeEvent e) {
 									int value = e.getValue();
-									System.out.print(pin + " ");
-									
-									System.out.println(value);
 									
 									ass.setInfo(MegaConstants.DIGITAL_INPUT_PIN_MAX+1+pin, value);
 									repaint();
@@ -217,9 +215,13 @@ public class OperationFrame extends JPanel implements ActionListener {
 								e1.printStackTrace();
 							}
 						}
+						timer.start();
+						wsd = new WindSpeedDisplay(link);
 					}
 				}).start();
 			}
+		} else if(e.getSource() == timer) {
+			wsd.displayDigit(3, 5);
 		}
 	}
 }

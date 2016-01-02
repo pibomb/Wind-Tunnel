@@ -1,0 +1,170 @@
+package org.demons.gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import org.demons.gui.ArduinoStatSummary.Listing;
+import org.zu.ardulink.Link;
+import org.zu.ardulink.RawDataListener;
+import org.zu.ardulink.event.ConnectionEvent;
+import org.zu.ardulink.event.ConnectionListener;
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.event.DisconnectionEvent;
+import org.zu.ardulink.gui.ConnectionStatus;
+import org.zu.ardulink.gui.DigitalPinStatus;
+import org.zu.ardulink.gui.SerialConnectionPanel;
+import org.zu.ardulink.gui.SwitchController;
+
+import com.sun.corba.se.spi.orbutil.fsm.Action;
+
+public class ArduinoCommunicationPanel extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -2739228960818599179L;
+	
+	private Link link = null;
+	
+	private final int PADDING = 25;
+	private final int DOT_RADIUS = 50;
+	
+	private JLabel title;
+	private JPanel fnPanel;
+	
+	private SerialConnectionPanel serialConnectionPanel;
+	private JButton btnConnect;
+	private JButton btnAccess;
+	
+	private boolean accessed = false;
+	
+	public ArduinoCommunicationPanel(int width, int height, Font titleFont, ActionListener parent) {
+		super();
+		
+		setSize(width, height);
+		setBorder(new EmptyBorder(PADDING, PADDING, PADDING, PADDING));
+		setLayout(null);
+		
+		title = new JLabel("ARDUINO COMMUNICATION", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, titleFont.getSize()+2);
+		title.setForeground(new Color(0, 200, 0));
+		add(title, BorderLayout.NORTH);
+		
+		fnPanel = new JPanel();
+		fnPanel.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, height-2*PADDING-title.getHeight());
+		fnPanel.setLayout(new BorderLayout());
+		add(fnPanel);
+		
+		/*
+		 * GUI to select connection port
+		 */
+		serialConnectionPanel = new SerialConnectionPanel();
+		serialConnectionPanel.setOpaque(false);
+		fnPanel.add(serialConnectionPanel, BorderLayout.NORTH);
+		
+		/*
+		 * Code for connect and disconnect buttons
+		 */
+		ConnectionStatus connectionStatus = new ConnectionStatus();
+		connectionStatus.setOpaque(false);
+		fnPanel.add(connectionStatus, BorderLayout.CENTER);
+		
+		JPanel connectPanel = new JPanel();
+		connectPanel.setOpaque(false);
+		fnPanel.add(connectPanel, BorderLayout.SOUTH);
+
+		btnConnect = new JButton("Connect");
+		btnConnect.setActionCommand("CONNECT");
+		btnConnect.addActionListener(this);
+		connectPanel.add(btnConnect);
+		
+		btnAccess = new JButton("Access");
+		btnAccess.setActionCommand("ACCESS");
+		btnAccess.addActionListener(parent);
+		btnAccess.addActionListener(this);
+		connectPanel.add(btnAccess);
+		
+		repaint();
+	}
+	
+	public void setLink(Link l) {
+		link = l;
+		
+		link.addConnectionListener(new ConnectionListener() {
+			@Override
+			public void disconnected(DisconnectionEvent arg0) {
+				btnConnect.setText("Connect");
+				btnConnect.setActionCommand("CONNECT");
+				repaint();
+			}
+			
+			@Override
+			public void connected(ConnectionEvent arg0) {
+				btnConnect.setText("Disconnect");
+				btnConnect.setActionCommand("DISCONNECT");
+				repaint();
+			}
+		});
+	}
+	
+	public SerialConnectionPanel getSerialConnectionPanel() {
+		return serialConnectionPanel;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(new Color(128, 255, 128));
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		if(accessed) {
+			g.setColor(new Color(0, 212, 0));
+			g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
+		} else {
+			g.setColor(Color.RED);
+			g.fillOval(getWidth()/2-DOT_RADIUS, getHeight()/2, 2*DOT_RADIUS, 2*DOT_RADIUS);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("CONNECT")) {
+			String comPort = serialConnectionPanel.getConnectionPort();
+			String baudRateS = serialConnectionPanel.getBaudRate();
+					
+			try {
+				int baudRate = Integer.parseInt(baudRateS);				
+				link.connect(comPort, baudRate);
+			} catch(Exception ex) {
+				ex.printStackTrace();
+				String message = ex.getMessage();
+				if(message == null || message.trim().equals("")) {
+					message = "Generic Error on connection";
+				}
+			}
+			
+			if(link.isConnected()) {
+				btnConnect.setText("Disconnect");
+				btnConnect.setActionCommand("DISCONNECT");
+			}
+		} else if(e.getActionCommand().equals("DISCONNECT")) {
+			link.disconnect();
+			btnConnect.setText("Connect");
+			btnConnect.setActionCommand("CONNECT");
+			accessed = false;
+		} else if(e.getSource() == btnAccess) {
+			accessed = true;
+		}
+	}
+}

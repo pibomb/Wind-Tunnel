@@ -2,11 +2,13 @@ package org.demons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -36,36 +38,51 @@ public class ArduinoCommunicationPanel extends JPanel implements ActionListener 
 	private final int PADDING = 25;
 	private final int DOT_RADIUS = 50;
 	
+	private JLabel title;
+	private JPanel fnPanel;
+	
 	private SerialConnectionPanel serialConnectionPanel;
 	private JButton btnConnect;
 	private JButton btnAccess;
 	
 	private boolean accessed = false;
 	
-	public ArduinoCommunicationPanel(int width, int height, ActionListener parent) {
+	public ArduinoCommunicationPanel(int width, int height, Font titleFont, ActionListener parent) {
 		super();
 		
 		setSize(width, height);
 		setBorder(new EmptyBorder(PADDING, PADDING, PADDING, PADDING));
-		setLayout(new BorderLayout(0, 0));
+		setLayout(null);
+		
+		title = new JLabel("ARDUINO COMMUNICATION", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, titleFont.getSize()+2);
+		title.setForeground(new Color(0, 200, 0));
+		add(title);
+		
+		fnPanel = new JPanel();
+		fnPanel.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, height-2*PADDING-title.getHeight());
+		fnPanel.setLayout(new BorderLayout());
+		fnPanel.setOpaque(false);
+		add(fnPanel);
 		
 		/*
 		 * GUI to select connection port
 		 */
 		serialConnectionPanel = new SerialConnectionPanel();
 		serialConnectionPanel.setOpaque(false);
-		add(serialConnectionPanel, BorderLayout.NORTH);
+		fnPanel.add(serialConnectionPanel, BorderLayout.NORTH);
 		
 		/*
 		 * Code for connect and disconnect buttons
 		 */
 		ConnectionStatus connectionStatus = new ConnectionStatus();
 		connectionStatus.setOpaque(false);
-		add(connectionStatus, BorderLayout.CENTER);
+		fnPanel.add(connectionStatus, BorderLayout.CENTER);
 		
 		JPanel connectPanel = new JPanel();
 		connectPanel.setOpaque(false);
-		add(connectPanel, BorderLayout.SOUTH);
+		fnPanel.add(connectPanel, BorderLayout.SOUTH);
 
 		btnConnect = new JButton("Connect");
 		btnConnect.setActionCommand("CONNECT");
