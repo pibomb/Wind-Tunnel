@@ -1,0 +1,116 @@
+package org.demons.gui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+
+import org.demons.gui.ArduinoStatSummary.Listing;
+import org.demons.utils.MegaConstants;
+import org.zu.ardulink.Link;
+import org.zu.ardulink.protocol.IProtocol;
+
+import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
+
+class HistoryValuesPanel extends JPanel {
+	private static final long serialVersionUID = -2739228960818599179L;
+	private Link link = null;
+	
+	private final int PADDING = 10;
+	
+	private Font titleFont, regularFont, tableFont;
+	
+	private JLabel title;
+	private JPanel descBar, mainPanel;
+	private JScrollPane speedPanel, timePanel, liftPanel, dragPanel;
+	private JTextArea speedTextArea, timeTextArea, liftTextArea, dragTextArea;
+
+	public HistoryValuesPanel(int width, int height) {
+		super();
+		
+		setLayout(null);
+		setSize(width, height);
+		
+		String speedArea = " ";
+		
+		titleFont = new Font("Century", Font.BOLD, 14);
+		regularFont = new Font("Dialog", Font.BOLD, 14);
+		tableFont = new Font("Dialog", Font.BOLD, 12);
+		
+		title = new JLabel("HISTORY OF VALUES", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING, PADDING, width-2*PADDING, 15);
+		title.setForeground(Color.BLUE);
+		
+		descBar = new JPanel();
+		descBar.setLayout(new GridLayout(1, 4));
+		JLabel time = new JLabel("Time");
+		time.setFont(tableFont);
+		JLabel speed = new JLabel("Speed");
+		speed.setFont(tableFont);
+		JLabel lift = new JLabel("Lift");
+		time.setFont(tableFont);
+		JLabel drag = new JLabel("Drag");
+		speed.setFont(tableFont);
+		descBar.add(time);
+		descBar.add(new JSeparator(JSeparator.VERTICAL));
+		descBar.add(speed);
+		descBar.add(new JSeparator(JSeparator.VERTICAL));
+		descBar.add(lift);
+		descBar.add(new JSeparator(JSeparator.VERTICAL));
+		descBar.add(drag);
+		descBar.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, tableFont.getSize()+2);
+
+		mainPanel = new JPanel();
+		mainPanel.setBounds(PADDING, 2*PADDING+title.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-descBar.getHeight());
+		
+		
+		timeTextArea = new JTextArea(10,5);
+		speedTextArea = new JTextArea(10,5);
+		liftTextArea = new JTextArea(10,5);
+		dragTextArea = new JTextArea(10,5);
+		
+		timePanel = new JScrollPane(timeTextArea);
+		speedPanel = new JScrollPane(speedTextArea);
+		liftPanel = new JScrollPane(liftTextArea);
+		dragPanel = new JScrollPane(dragTextArea);
+		
+		timePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		speedPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		liftPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		dragPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		mainPanel.add(timePanel);
+		mainPanel.add(speedPanel);
+		mainPanel.add(liftPanel);
+		mainPanel.add(dragPanel);	
+		
+		add(title);
+		add(descBar);
+		add(mainPanel);
+		
+		repaint();
+	}
+	
+	public HistoryValuesPanel(int width, int height, Font f) {
+		this(width, height);
+		titleFont = f;
+		title.setFont(f);
+		repaint();
+	}
+	
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+}

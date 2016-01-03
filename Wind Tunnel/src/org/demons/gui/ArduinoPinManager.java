@@ -1,5 +1,6 @@
 package org.demons.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,6 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.zu.ardulink.Link;
+import org.zu.ardulink.gui.PWMController;
+import org.zu.ardulink.gui.SwitchController;
+import org.zu.ardulink.gui.ToneController;
 
 class ArduinoPinManager extends JPanel {
 	private static final long serialVersionUID = -2739228960818599179L;
@@ -32,6 +36,21 @@ class ArduinoPinManager extends JPanel {
 		title.setBounds(PADDING, PADDING, width-2*PADDING, titleFont.getSize()+2);
 		title.setForeground(Color.RED);
 		add(title);
+		
+		fnPanel = new JPanel();
+		fnPanel.setBounds(PADDING, PADDING+title.getHeight(), width-2*PADDING, height-2*PADDING-title.getHeight());
+		fnPanel.setOpaque(false);
+		
+		SwitchController switchController = new SwitchController();
+		switchController.setOpaque(false);
+		fnPanel.add(switchController, BorderLayout.WEST);
+		switchController.setPin(5);
+		
+		PWMController pwmController = new PWMController();
+		pwmController.setOpaque(false);
+		fnPanel.add(pwmController, BorderLayout.EAST);
+		
+		add(fnPanel);
 		
 		repaint();
 	}
