@@ -1,0 +1,740 @@
+package org.demons;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import org.demons.gui.*;
+
+public class Launch {
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
+					JFrame frame = new JFrame("Maxwell's Demons");
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					frame.setUndecorated(false);
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.add(new OperationFrame());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+}
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Hashtable;
+import javax.imageio.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+
+////////////////////////////////////////////////////////// Demonstrates display of graphics on a panel
+/**
+ * @author Sheila
+ *
+ */
+/**
+ * @author Sheila
+ *
+ */
+class Graph2 extends JFrame
+{
+	//Buttons
+	JButton timerButton, buyButton1, sellButton1, buyButton2, sellButton2, buyButton3, sellButton3;
+	
+	SpinnerNumberModel one = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	SpinnerNumberModel two = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	SpinnerNumberModel three = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	SpinnerNumberModel four = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	SpinnerNumberModel five = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	SpinnerNumberModel six = new SpinnerNumberModel(
+            new Integer(0),
+            new Integer(0),
+            new Integer(9999999),
+            new Integer(1)
+    );
+	
+    JSpinner _buy1 = new JSpinner(one);
+    JSpinner _buy2 = new JSpinner(two);
+    JSpinner _buy3 = new JSpinner(three);
+    JSpinner _sell1 = new JSpinner(four);
+    JSpinner _sell2 = new JSpinner(five);
+    JSpinner _sell3 = new JSpinner(six);
+
+	//display for the stocks owned, stocks price, number of stocks available for sale
+	JTextField _stockOwned1 = new JTextField (5);
+	JTextField _stockOwned2 = new JTextField (5);
+	JTextField _stockOwned3 = new JTextField (5);
+	JTextField _stockPrice1 = new JTextField (5);
+	JTextField _stockPrice2 = new JTextField (5);
+	JTextField _stockPrice3 = new JTextField (5);
+	JTextField _stockAvailable1 = new JTextField (9);
+	JTextField _stockAvailable2 = new JTextField (9);
+	JTextField _stockAvailable3 = new JTextField (9);
+	
+	BufferedImage background, applelogo, googlelogo, microsoftlogo;
+	Font font1 = new Font("Courier", Font.BOLD, 50);
+	Font buysell = new Font("Century Gothic", Font.PLAIN, 15);
+	Font tabfont = new Font("Century Gothic", Font.BOLD, 12);
+	Font inputfont = new Font("Courier New", Font.BOLD, 15);
+	Font label = new Font("Courier New", Font.BOLD, 13);
+
+	//display for money and headlines
+	JLabel _money = new JLabel();	
+	JTextArea _headline = new JTextArea (25,30);
+	JTextArea _transactionStatus = new JTextArea (6,12);
+
+	int size = 150; // initial size of square
+	Timer t;
+
+	//price stuff
+
+	Stock AppleS = new Stock (20, 30000, "Apple");
+	Stock MicrosoftS = new Stock (20, 2300000, "Microsoft");
+	Stock GoogleS = new Stock (20, 36000000, "Google");
+
+	//user inventory
+	double userMoney=1000;
+
+	//variables used for transactions
+	int amount, transactionSuccess;
+	double transactionMoney;
+	String transactionText = " ";
+	String news = " ";
+
+	//storing the prices
+	public double[] myArray1 = new double [999999];
+	public double[] myArray2 = new double [999999];
+	public double[] myArray3 = new double [999999];
+
+	//storing events
+	public String[] textArray1 = new String [999999];
+	public String[] textArray2 = new String [999999];
+	public String[] textArray3 = new String [999999];
+
+	//clock
+	public int val = 0;
+	
+
+	/*========================constructor==========================*/
+	public Graph2 ()
+	{
+		//timer
+		timerButton = new JButton ("Run");
+		Automatic auto = new Automatic ();
+		t = new Timer (500, auto); // set up automatic timer - magneto will move every half second
+
+		//text in buttons
+		buyButton1 = new JButton ("Buy Apple Stock");
+		sellButton1 = new JButton ("Sell Apple Stock");
+		buyButton2 = new JButton ("Buy Microsoft Stock");
+		sellButton2 = new JButton ("Sell Microsoft Stock");
+		buyButton3 = new JButton ("Buy Google Stock");
+		sellButton3 = new JButton ("Sell Google Stock");   
+		
+		buyButton1.setFont(buysell);
+		buyButton2.setFont(buysell);
+		buyButton3.setFont(buysell);
+		sellButton1.setFont(buysell);
+		sellButton2.setFont(buysell);
+		sellButton3.setFont(buysell);
+		
+		_buy1.setFont(inputfont);
+		_buy2.setFont(inputfont);
+		_buy3.setFont(inputfont);
+		_sell1.setFont(inputfont);
+		_sell2.setFont(inputfont);
+		_sell3.setFont(inputfont);
+		
+
+		//Create content pane, panels, set layouts
+		ContentPanel content = new ContentPanel ();        // Create a content pane
+		
+		content.setLayout (new BorderLayout ()); // Use BorderLayout for main panel
+		JPanel north = new JPanel ();
+		north.setLayout (new FlowLayout ()); 
+		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		
+		JPanel east = new JPanel ();
+		east.setLayout (new BorderLayout ()); 
+		
+		JPanel northeast = new JPanel ();
+		northeast.setLayout (new FlowLayout ());
+		JPanel southeast = new JPanel ();
+		southeast.setLayout (new FlowLayout ());
+		
+		JScrollPane scroll = new JScrollPane (_headline);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		JScrollPane scroll2 = new JScrollPane (_transactionStatus);
+		scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll2.setOpaque(false);		
+		scroll2.getViewport().setOpaque(false);
+		_transactionStatus.setForeground(Color.WHITE);
+
+		DrawArea board = new DrawArea (850, 400); // Custom panel to use as graphics output area
+		
+		_money.setFont(font1);
+		_money.setForeground(new Color(135,231,29));
+		_money.setOpaque(false);
+		_transactionStatus.setOpaque(false);
+		
+		try
+		{
+			background = ImageIO.read(getClass().getResource("background.png"));
+			applelogo = ImageIO.read(getClass().getResource("applelogo.png"));
+			googlelogo = ImageIO.read(getClass().getResource("googlelogo.png"));
+			microsoftlogo = ImageIO.read(getClass().getResource("microsoftlogo.png"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		//displays
+		_headline.setEditable(false); 
+		_transactionStatus.setEditable(false); 
+		_money.setText("$"+userMoney);
+		_stockOwned1.setEditable(false);
+		_stockOwned1.setText(AppleS.unitsOnPlayer+"");
+		_stockOwned2.setEditable(false);
+		_stockOwned2.setText(MicrosoftS.unitsOnPlayer+"");
+		_stockOwned3.setEditable(false);
+		_stockOwned3.setText(GoogleS.unitsOnPlayer+"");
+		_stockPrice1.setEditable(false);
+		_stockPrice1.setText(AppleS.price+"");
+		_stockPrice2.setEditable(false);
+		_stockPrice2.setText(MicrosoftS.price+"");
+		_stockPrice3.setEditable(false);
+		_stockPrice3.setText(GoogleS.price+"");
+		_stockAvailable1.setEditable(false);
+		_stockAvailable1.setText(AppleS.unitsForSale+"");
+		_stockAvailable2.setEditable(false);
+		_stockAvailable2.setText(MicrosoftS.unitsForSale+"");
+		_stockAvailable3.setEditable(false);
+		_stockAvailable3.setText(GoogleS.unitsForSale+"");
+		
+		//card 1
+		JPanel card1 = new JPanel() {
+			public Dimension getPreferredSize() {
+				Dimension size = super.getPreferredSize();
+				size.width += 100;
+				return size;
+			}
+		};
+
+		//card 2
+		JPanel card2 = new JPanel() {
+			public Dimension getPreferredSize() {
+				Dimension size = super.getPreferredSize();
+				size.width += 100;
+				return size;
+			}
+		};
+
+		//card 3
+		JPanel card3 = new JPanel() {
+			public Dimension getPreferredSize() {
+				Dimension size = super.getPreferredSize();
+				size.width += 100;
+				return size;
+			}
+		};
+
+		//Add the components to the input area.   
+		
+		JPanel south = new JPanel();
+		south.setLayout (new BorderLayout ()); 
+
+		JPanel southright = new JPanel();
+		southright.setLayout (new FlowLayout ()); 
+		southright.add(scroll2);
+
+		JPanel card1top = new JPanel ();
+		card1top.setLayout (new FlowLayout ()); 
+		card1top.add (buyButton1);
+		buyButton1.addActionListener (new ButtonListener ());
+		card1top.add (_buy1); 
+		card1top.add (sellButton1);
+		sellButton1.addActionListener (new ButtonListener ());
+		card1top.add (_sell1);		
+		
+		JPanel card1bottom = new JPanel ();
+		card1bottom.setLayout (new FlowLayout ()); 
+		JLabel stockowned1 = new JLabel("Stock Owned:  ");
+		stockowned1.setFont(label);
+		card1bottom.add (stockowned1);
+		card1bottom.add (_stockOwned1);
+		JLabel currentprice1 = new JLabel("Current Price: $");
+		currentprice1.setFont(label);
+		card1bottom.add (currentprice1);
+		card1bottom.add(_stockPrice1);
+		JLabel unitsavailable1 = new JLabel("Stock Available: ");
+		unitsavailable1.setFont(label);
+		card1bottom.add (unitsavailable1);
+		card1bottom.add(_stockAvailable1);
+
+		card1.setBackground(new Color(191, 111, 191));
+		card1top.setOpaque(false);
+		card1bottom.setOpaque(false);
+		
+		tabbedPane.addTab("Apple", new ImageIcon(applelogo), card1);
+		tabbedPane.setForegroundAt(0, Color.MAGENTA);	
+		
+		card1.setLayout (new BorderLayout ()); 
+		card1.setPreferredSize(new Dimension(100,50));
+		card1.add(card1top, BorderLayout.NORTH);
+		card1.add(card1bottom, BorderLayout.SOUTH);
+
+		JPanel card2top = new JPanel ();
+		card2top.setLayout (new FlowLayout ()); 
+		card2top.add (buyButton2);
+		buyButton2.addActionListener (new ButtonListener ());
+		card2top.add (_buy2); 
+		card2top.add (sellButton2);
+		sellButton2.addActionListener (new ButtonListener ());
+		card2top.add (_sell2);
+		
+		JPanel card2bottom = new JPanel ();
+		card2bottom.setLayout (new FlowLayout ()); 
+		JLabel stockowned2 = new JLabel("Stock Owned:  ");
+		stockowned2.setFont(label);
+		card2bottom.add (stockowned2);
+		card2bottom.add (_stockOwned2);
+		JLabel currentprice2 = new JLabel("Current Price: $");
+		currentprice2.setFont(label);
+		card2bottom.add (currentprice2);
+		card2bottom.add(_stockPrice2);
+		JLabel unitsavailable2 = new JLabel("Stock Available: ");
+		unitsavailable2.setFont(label);
+		card2bottom.add (unitsavailable2);
+		card2bottom.add(_stockAvailable2);
+		
+		card2.setLayout (new BorderLayout ()); 
+		card2.setPreferredSize(new Dimension(100,50));
+		card2.add(card2top, BorderLayout.NORTH);
+		card2.add(card2bottom, BorderLayout.SOUTH);
+		
+		card2.setBackground(new Color(133, 207, 159));
+		card2top.setOpaque(false);
+		card2bottom.setOpaque(false);
+		
+		tabbedPane.addTab("Microsoft", new ImageIcon(microsoftlogo), card2);
+		tabbedPane.setForegroundAt(1, Color.GREEN);
+		
+		JPanel card3top = new JPanel ();
+		card3top.setLayout (new FlowLayout ()); 
+		card3top.add (buyButton3);
+		buyButton3.addActionListener (new ButtonListener ());
+		card3top.add (_buy3); 
+		card3top.add (sellButton3);
+		sellButton3.addActionListener (new ButtonListener ());
+		card3top.add (_sell3);
+		
+		JPanel card3bottom = new JPanel ();
+		card3bottom.setLayout (new FlowLayout ()); 
+		JLabel stockowned3 = new JLabel("Stock Owned: ");
+		stockowned3.setFont(label);
+		card3bottom.add (stockowned3);
+		card3bottom.add (_stockOwned3);
+		JLabel currentprice3 = new JLabel("Current Price: $");
+		currentprice3.setFont(label);
+		card3bottom.add (currentprice3);
+		card3bottom.add(_stockPrice3);
+		JLabel unitsavailable3 = new JLabel("Stock Available: ");
+		unitsavailable3.setFont(label);
+		card3bottom.add (unitsavailable3);
+		card3bottom.add(_stockAvailable3);
+
+		
+		card3.setBackground(new Color(91, 100, 210));
+		card3top.setOpaque(false);
+		card3bottom.setOpaque(false);
+		
+		card3.setLayout (new BorderLayout ()); 
+		card3.setPreferredSize(new Dimension(100,50));
+		card3.add(card3top, BorderLayout.NORTH);
+		card3.add(card3bottom, BorderLayout.SOUTH);		
+		
+		tabbedPane.addTab("Google", new ImageIcon(googlelogo), card3);
+		tabbedPane.setForegroundAt(2, Color.BLUE);
+		tabbedPane.setFont(tabfont);
+		
+		_transactionStatus.setOpaque(false);
+		southright.setOpaque(false);
+
+		south.add(tabbedPane, BorderLayout.CENTER);
+		south.add(southright, BorderLayout.EAST);
+
+		north.setLayout (new BorderLayout ()); 
+		timerButton.addActionListener (new ButtonListener ());
+		JPanel corner = new JPanel();
+		corner.add(timerButton);
+		north.add (corner, BorderLayout.WEST);  		
+
+		northeast.add (_money);
+		southeast.add (scroll);
+
+		east.add(northeast, BorderLayout.NORTH);
+		east.add(southeast, BorderLayout.SOUTH);
+		
+		content.add (north, "North"); // Input area
+		content.add (board, "Center"); // Output area
+		content.add(south, "South");
+		content.add (east, "East");	
+		
+		_stockOwned1.setOpaque(false);
+		_stockOwned2.setOpaque(false);
+		_stockOwned3.setOpaque(false);
+		_stockPrice1.setOpaque(false);
+		_stockPrice2.setOpaque(false);
+		_stockPrice3.setOpaque(false);
+		_stockAvailable1.setOpaque(false);
+		_stockAvailable2.setOpaque(false);
+		_stockAvailable3.setOpaque(false);
+		
+		content.setOpaque(false);
+		southright.setOpaque(false);
+		south.setOpaque(false);
+		north.setOpaque(false);
+		corner.setOpaque(false);
+		northeast.setOpaque(false);
+		east.setOpaque(false);
+		southeast.setOpaque(false);
+		north.setOpaque(false);
+		
+		setContentPane(content);
+		pack ();
+		setTitle ("Stock Market Simpulator 2k15");
+		setSize (1210, 700);
+		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo (null);           // Center window.
+		setVisible (true);
+
+	}
+
+	/*=================buttonlistener for inputs===================*/
+	class ButtonListener implements ActionListener
+	{
+		public void actionPerformed (ActionEvent e)
+		{
+			//timer events
+			if (e.getActionCommand ().equals ("Run")) 
+			{
+				timerButton.setText ("Pause");
+				t.start ();
+			}
+			else if (e.getActionCommand ().equals ("Pause")) 
+			{
+				timerButton.setText ("Run");
+				t.stop ();
+			}
+
+			//stock events
+			//buy events
+			if(e.getActionCommand ().equals ("Buy Apple Stock"))
+			{
+				buyStock(_buy1, AppleS, myArray1);
+			}
+
+			if(e.getActionCommand ().equals ("Buy Microsoft Stock"))
+			{
+				buyStock(_buy2, MicrosoftS, myArray2);
+			}
+
+			if(e.getActionCommand ().equals ("Buy Google Stock"))
+			{
+				buyStock(_buy3, GoogleS, myArray3);
+			}
+
+			//sell events
+			if(e.getActionCommand ().equals ("Sell Apple Stock"))
+			{
+				sellStock(_sell1, AppleS, myArray1);
+			}
+
+			if(e.getActionCommand ().equals ("Sell Microsoft Stock"))
+			{
+				sellStock(_sell2, MicrosoftS, myArray2);
+			}
+
+			if(e.getActionCommand ().equals ("Sell Google Stock"))
+			{
+				sellStock(_sell3, GoogleS, myArray3);
+			}
+		}
+
+		/*==============functions used to buy and sell stocks==============*/
+		public void buyStock (JSpinner buyButton, Stock S, double[] PriceArray){
+
+			//set the transactionSuccess to fail initially
+			transactionSuccess=1;
+
+			//if user input is an integer, transaction is a success
+			try{
+				amount=(Integer)(buyButton.getValue());
+				transactionSuccess=0;
+			}
+
+			//catch exceptions for if input is not an integer
+			catch(Exception a){
+				transactionText+="\nInvalid Input";
+				_transactionStatus.setText(transactionText); 
+				transactionSuccess=1;
+			}
+
+			//if input is successfully parsed
+			if(transactionSuccess==0){
+				//calculate the amount of money being transacted
+				transactionMoney=amount*PriceArray[val+15];
+
+				//check to see that the user has not overspent, or has bought all the stocks, or has bought negative stocks
+				if(userMoney-transactionMoney<0 || (S.unitsOnPlayer+amount)>S.unitsForSale || amount<0)
+				{
+					transactionText+="\nNot Enought Money!";
+					_transactionStatus.setText(transactionText); 
+				}
+
+				//if input is valid, move stock to user inventory, take away money
+				else{
+					transactionText+="\nTransaction Complete.";
+					_transactionStatus.setText(transactionText); 
+					userMoney-=transactionMoney;
+					S.unitsForSale-=amount;
+					S.unitsOnPlayer+=amount;
+				}
+			}
+		}
+
+		public void sellStock (JSpinner sellButton, Stock S, double[] PriceArray){
+
+			//set the transactionSuccess to fail initially
+			transactionSuccess=1;
+
+			//if user input is an integer, transaction is a success
+			try{
+				amount=(Integer)(sellButton.getValue());
+				transactionSuccess=0;
+			}
+
+			//catch exceptions for if input is not an integer
+			catch(Exception a){
+				transactionText+="\nInvalid Input";
+				_transactionStatus.setText(transactionText); 
+				transactionSuccess=1;
+			}
+
+			//if input is successfully parsed
+			if(transactionSuccess==0){
+				//calculate the amount of money being transacted
+				transactionMoney=amount*PriceArray[val+15];
+
+				//check to see that the user has sold negative stocks, tried to sell more stocks than owned, or than available
+				if((S.unitsOnPlayer-amount)<0 || amount<0||(S.unitsOnPlayer+amount)>S.unitsForSale)
+				{
+					transactionText+="\nNot Enought Money!";
+					_transactionStatus.setText(transactionText); 
+				}
+
+				//if input is valid, move stock to user inventory, take away money
+				else{
+					transactionText+="\nTransaction Complete.";
+					_transactionStatus.setText(transactionText); 
+					userMoney+=transactionMoney;
+					S.unitsForSale+=amount;
+					S.unitsOnPlayer-=amount;
+				}
+			}
+		}
+	}
+
+	/*===========timer event to update values at each tick=========*/
+	class Automatic implements ActionListener
+	{
+		public void actionPerformed (ActionEvent event)  // Code to be executed by timer
+		{
+			repaint (); // Refresh drawing area (call paintComponent)
+
+			//refresh stock prices, units for sale, money player owns, and any in game events
+			_stockPrice1.setText(myArray1[val+15]+"");
+			_stockPrice2.setText(myArray2[val+15]+"");
+			_stockPrice3.setText(myArray3[val+15]+"");
+			_stockAvailable1.setText(AppleS.unitsForSale+"");
+			_stockAvailable2.setText(MicrosoftS.unitsForSale+"");
+			_stockAvailable3.setText(GoogleS.unitsForSale+"");
+
+			_money.setText("$" + (double)Math.round(userMoney*100)/100);
+			_stockOwned1.setText(AppleS.unitsOnPlayer+"");
+			_stockOwned2.setText(MicrosoftS.unitsOnPlayer+"");
+			_stockOwned3.setText(GoogleS.unitsOnPlayer+"");
+
+			if(textArray1[val+15]!=" "){
+				news+="\n"+textArray1[val+15];
+				_headline.setText(news);
+			}
+
+			if(textArray2[val+15]!=" "){
+				news+="\n"+textArray2[val+15];
+				_headline.setText(news);
+			}
+
+			if(textArray3[val+15]!=" "){
+				news+="\n"+textArray3[val+15];
+				_headline.setText(news);
+			}
+		}
+	}
+
+	
+	/*==============test===============*/
+	
+	class ContentPanel extends JPanel 
+	{
+		public void paintComponent(Graphics g) 
+		 {
+		    g.drawImage(background, 0, 0, null);
+		 }
+	}
+	
+	
+	/*==============calculate values and draws graph===============*/
+	class DrawArea extends JPanel
+	{
+
+		//method to generate and fill arrays with stock prices for the entire game
+		public void fillArray (double[] array, String[] sArray, Stock C)
+		{
+			for (int x = 0 ; x < array.length ; x++)
+			{
+				C.PriceChange();//generate the price of the stock based on the economy
+				
+				//stores the stock price
+				array[x] = (double)Math.round(C.price*100)/100;
+				
+				//stores news item that is generated
+				sArray[x]= C.message;
+
+			}
+		}
+
+		public DrawArea (int width, int height)  // Create panel of given size
+		{
+			this.setPreferredSize (new Dimension (width, height));
+		}
+
+
+		public void paintComponent (Graphics g)  // g can be passed to a class method
+		{           
+			Graphics2D g2 = (Graphics2D) g;
+            g2.setStroke(new BasicStroke(3));
+
+			//pre-generate all values using fill array method on the first tick
+			if(val<1)
+			{
+				fillArray(myArray1, textArray1, AppleS);     
+				fillArray(myArray2, textArray2, MicrosoftS);   
+				fillArray(myArray3, textArray3, GoogleS);     
+			}        	
+			
+			//increase the tick everytime the paint method is called
+			val++;
+
+			//graph
+			g.drawRect(23, 50, 775, 400);
+			
+			g2.setStroke(new BasicStroke(2));
+
+			for(int z = 50; z <= 450; z+=10)
+			{
+				g.drawLine(20, z, 30, z);
+			}
+
+			int x1 = 50, x2 = 25, y1 = 0, y2 = 450;
+			int v1 = 50, v2 = 25, w1 = 0, w2 = 450;
+			int t1 = 50, t2 = 25, u1 = 0, u2 = 450;
+			
+			g2.setStroke(new BasicStroke(3));
+
+			for(int y=0; y<15; y++)
+			{			
+				
+				if(val!=0)
+				{
+					y2 = 450 - (int)(myArray1[y+val -1] / 2.5);
+					w2 = 450 - (int)(myArray2[y+val -1] / 2.5);
+					u2 = 450 - (int)(myArray3[y+val -1] / 2.5);
+				}
+					//stock 1
+				g.setColor(Color.MAGENTA);
+				x1 = x1 + 50;
+				y1 = 450 - (int)(myArray1[y+val] / 2.5);
+				g.drawLine(x1, y1, x2, y2);
+				x2 = x1;
+				y2 = y1;	
+
+				//stock 2
+				g.setColor(Color.GREEN);
+				v1 = v1 + 50;
+				w1 = 450 - (int)(myArray2[y+val] / 2.5);
+				g.drawLine(v1, w1, v2, w2);
+				v2 = v1;
+				w2 = w1;
+
+				//stock 3
+				g.setColor(Color.BLUE);
+				t1 = t1 + 50;
+				u1 = 450 - (int)(myArray3[y+val] / 2.5);
+				g.drawLine(t1, u1, t2, u2);
+				t2 = t1;
+				u2 = u1;
+
+				//debugging
+				System.out.println(myArray1[val] + " "+ myArray2[val] + " " +myArray3[val]);
+			}
+		}
+	}
+
+}
+
