@@ -57,7 +57,8 @@ public class OperationFrame extends JPanel implements ActionListener {
 	private Link link = Link.getDefaultInstance();
 	
 	private Timer timer;
-	private final int REFRESH_RATE = 50;
+	private final int REFRESH_RATE = 500;
+	private int digit = 0;
 	
 	private DigitalReadChangeListener[] drcl;
 	private AnalogReadChangeListener[] arcl;
@@ -221,7 +222,8 @@ public class OperationFrame extends JPanel implements ActionListener {
 				}).start();
 			}
 		} else if(e.getSource() == timer) {
-			wsd.displayDigit(3, 5);
+			wsd.displayDigit(3, digit++);
+			digit %= 10;
 		}
 	}
 }

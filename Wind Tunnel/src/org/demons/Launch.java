@@ -17,7 +17,7 @@ public class Launch {
 					UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
 					JFrame frame = new JFrame("Maxwell's Demons");
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					frame.setUndecorated(true);
+					frame.setUndecorated(false);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.add(new OperationFrame());
 					frame.setVisible(true);
