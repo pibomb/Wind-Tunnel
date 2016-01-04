@@ -134,3 +134,8 @@
 2016-01-02 21:25:02,818 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
 2016-01-02 21:25:03,703 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
 2016-01-02 21:27:42,939 [main] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache file is out-of-date. Remote download required.
+2016-01-03 14:23:12,311 [main] INFO  c.t.i.a.b.BridgeConnectorRegistryProvider - The location C:\bin\java-mars\eclipse\connectors is not a directory. No additional connectors were loaded.
+2016-01-03 14:23:12,398 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2016-01-03 14:23:57,366 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2016-01-03 14:23:58,194 [main] INFO  c.t.i.a.cache.MemoryOperationCache - Using CacheBuilder settings: CacheBuilder{initialCapacity=1000, concurrencyLevel=10, maximumSize=3000, expireAfterWrite=86400000000000ns, expireAfterAccess=43200000000000ns}
+2016-01-03 14:37:57,639 [main] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache file is not out-of-date. No remote download required.
