@@ -49,6 +49,10 @@ public class OperationFrame extends JPanel implements ActionListener {
 	
 	private ArduinoCommunicationPanel acp;
 	private ArduinoStatSummary ass;
+	public ArduinoStatSummary getAss() {
+		return ass;
+	}
+
 	private ArduinoPinManager apm;
 	
 	// Separators that divide up the panels
@@ -113,7 +117,11 @@ public class OperationFrame extends JPanel implements ActionListener {
 		divL.setBounds(div1, 0, div1, height);
 		divR.setBounds(div2, 0, div2, height);
 		
-		hvp = new HistoryValuesPanel(left.getWidth(), left.getHeight() / 5 * 3);
+		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3, titleFont, (ActionListener)this);
+		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3, titleFont);
+		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3, titleFont);
+		
+		hvp = new HistoryValuesPanel(left.getWidth(), left.getHeight() / 5 * 3, this);
 		hvp.setBounds(0, 0, hvp.getWidth(), hvp.getHeight());
 		cvp = new CurrentValuesPanel(left.getWidth(), left.getHeight() / 5 * 2);
 		cvp.setBounds(0, hvp.getHeight(), cvp.getWidth(), cvp.getHeight());
@@ -131,10 +139,6 @@ public class OperationFrame extends JPanel implements ActionListener {
 		center.add(wtgd);
 		center.add(csl);
 		center.add(sp);
-		
-		acp = new ArduinoCommunicationPanel(right.getWidth(), right.getHeight() / 3, titleFont, (ActionListener)this);
-		ass = new ArduinoStatSummary(right.getWidth(), right.getHeight() / 3, titleFont);
-		apm = new ArduinoPinManager(right.getWidth(), right.getHeight() / 3, titleFont);
 		
 		right.add(acp);
 		right.add(ass);
