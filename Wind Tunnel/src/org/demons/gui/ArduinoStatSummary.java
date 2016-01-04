@@ -158,6 +158,12 @@ public class ArduinoStatSummary extends JPanel {
 		}
 	}
 	
+	public String getInfo(boolean digital, int pin) {
+		int key = (digital) ? pin : MegaConstants.DIGITAL_INPUT_PIN_MAX + pin + 1;
+		
+		return pinListings[key].getValLabel().getText();
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
