@@ -22,6 +22,11 @@ you code useful for a specific purpose. In this case you have to modify it to su
 your needs.
 */
 
+#include <Servo.h>
+
+Servo myservo;  // create servo object to control a servo
+int servoPin = 2; // variable to store the servo pin
+
 // int intensity = 0;               // led intensity this is needed just as example for this sketch
 String inputString = "";         // a string to hold incoming data (this is general code you can reuse)
 boolean stringComplete = false;  // whether the string is complete (this is general code you can reuse)
@@ -53,12 +58,8 @@ void setup() {
     pinMode(index, OUTPUT);
     digitalWrite(index, LOW);
   }
-  
-  // Turn off LED this is needed just as example for this sketch
-//  analogWrite(11, intensity);
-  
-  // Read from 3 this is needed just as example for this sketch
-  //pinMode(3, INPUT);
+
+  myservo.attach(servoPin);
 }
 
 void loop() {
@@ -147,6 +148,10 @@ void loop() {
         Serial.write(255); // End of Message
         Serial.flush();
       }
+    } else if(inputString.startsWith("serv")) { // Servo motor
+      String pos = inputString.substring(4);
+      myservo.write(pos.toInt());
+      analogPinListenedValue[servoPin] = -1; // Ensure a message back when start listen happens.
     }
     
     // clear the string:
@@ -217,5 +222,4 @@ void serialEvent() {
     }
   }
 }
-
 
