@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,14 +31,14 @@ class HistoryValuesPanel extends JPanel {
 	private JPanel descBar, mainPanel;
 	private JScrollPane scrollPanel;
 	private JTextArea scrollArea;
+	private JButton startButton;
+	String textString = " ";
 
-	public HistoryValuesPanel(int width, int height) {
+	public HistoryValuesPanel(int width, int height, OperationFrame parent) {
 		super();
 		
 		setLayout(null);
 		setSize(width, height);
-		
-		String textString = " ";
 		
 		titleFont = new Font("Century", Font.BOLD, 14);
 		regularFont = new Font("Dialog", Font.BOLD, 14);
@@ -70,24 +71,24 @@ class HistoryValuesPanel extends JPanel {
 		mainPanel = new JPanel();
 		mainPanel.setBounds(PADDING, 2*PADDING+title.getHeight()+descBar.getHeight(), width-2*PADDING, height-3*PADDING-title.getHeight()-descBar.getHeight());
 			
-		scrollArea = new JTextArea(35,30);
+		startButton = new JButton("START");
+		
+		scrollArea = new JTextArea(10,10);
+		scrollArea.setEditable(false);
 		
 		scrollPanel = new JScrollPane(scrollArea);		
 		scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
+		textString += "\n"+(parent.getAss().getInfo(true,1)+parent.getAss().getInfo(true,2)+parent.getAss().getInfo(true,3));
+		scrollArea.setText(textString);
+		
 		mainPanel.add(scrollPanel);	
+		mainPanel.add(startButton);
 		
 		add(title);
 		add(descBar);
 		add(mainPanel);
 		
-		repaint();
-	}
-	
-	public HistoryValuesPanel(int width, int height, Font f) {
-		this(width, height);
-		titleFont = f;
-		title.setFont(f);
 		repaint();
 	}
 	
