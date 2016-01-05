@@ -61,7 +61,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 	private Link link = Link.getDefaultInstance();
 	
 	private Timer timer;
-	private final int REFRESH_RATE = 500;
+	public final int REFRESH_RATE = 500;
 	private int digit = 0;
 	
 	private DigitalReadChangeListener[] drcl;
@@ -123,7 +123,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 		
 		hvp = new HistoryValuesPanel(left.getWidth(), left.getHeight() / 5 * 3, this);
 		hvp.setBounds(0, 0, hvp.getWidth(), hvp.getHeight());
-		cvp = new CurrentValuesPanel(left.getWidth(), left.getHeight() / 5 * 2);
+		cvp = new CurrentValuesPanel(left.getWidth(), left.getHeight() / 5 * 2, this);
 		cvp.setBounds(0, hvp.getHeight(), cvp.getWidth(), cvp.getHeight());
 		
 		left.add(hvp);
@@ -228,6 +228,9 @@ public class OperationFrame extends JPanel implements ActionListener {
 		} else if(e.getSource() == timer) {
 			wsd.displayDigit(3, digit++);
 			digit %= 10;
+			
+			hvp.runHistory();
+			cvp.updateCurrentValues();
 		}
 	}
 }

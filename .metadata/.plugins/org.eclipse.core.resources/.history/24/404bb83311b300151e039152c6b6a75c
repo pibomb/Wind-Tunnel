@@ -1,0 +1,43 @@
+package org.demons.gui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+class CurrentValuesPanel extends JPanel {
+	private static final long serialVersionUID = -2739228960818599179L;
+	private Font titleFont;
+	private Color lilac;
+	private JLabel title, speed, lift, drag;
+	private final int PADDING = 10;
+
+	public CurrentValuesPanel(int width, int height) {
+		super();
+		
+		setLayout(new GridLayout(2,4));
+		setSize(width, height);		
+		
+		titleFont = new Font("Century", Font.BOLD, 16);
+		
+		title = new JLabel("CURRENT VALUES", JLabel.CENTER);
+		title.setFont(titleFont);
+		title.setBounds(PADDING+5, PADDING+10, width-2*PADDING, 16);
+		title.setForeground(new Color(115, 51, 115));
+		
+		add(title);
+		
+		repaint();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		lilac = new Color(200, 163, 220);
+		g.setColor(lilac);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+}

@@ -85,8 +85,24 @@ void loop() {
           int separatorPosition = inputString.indexOf('/', 11 );
           String pin = inputString.substring(11,separatorPosition);
           String intens = inputString.substring(separatorPosition + 1);
-          pinMode(pin.toInt(), OUTPUT);
-          analogWrite(pin.toInt(),intens.toInt());
+          
+          if(pin.toInt() == 99) {
+            int pos;
+            for (pos = 0; pos <= intens.toInt(); pos += 1) { // goes from 0 degrees to 180 degrees
+              // in steps of 1 degree
+              myservo.write(pos);              // tell servo to go to position in variable 'pos'
+              delay(15);                       // waits 15ms for the servo to reach the position
+            }
+            for (pos = intens.toInt(); pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+              myservo.write(pos);              // tell servo to go to position in variable 'pos'
+              delay(15);                       // waits 15ms for the servo to reach the position
+            }
+            
+            //myservo.write(intens.toInt());
+          } else {
+            pinMode(pin.toInt(), OUTPUT);
+            analogWrite(pin.toInt(),intens.toInt());
+          }
       } else if(inputString.substring(6,10) == "ppsw") { // Power Pin Switch (this is general code you can reuse)
           int separatorPosition = inputString.indexOf('/', 11 );
           String pin = inputString.substring(11,separatorPosition);

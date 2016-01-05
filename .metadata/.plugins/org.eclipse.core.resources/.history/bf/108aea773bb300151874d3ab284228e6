@@ -1,0 +1,127 @@
+package org.demons.test;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import org.zu.ardulink.Link;
+import org.zu.ardulink.RawDataListener;
+import org.zu.ardulink.event.ConnectionEvent;
+import org.zu.ardulink.event.ConnectionListener;
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
+import org.zu.ardulink.event.DisconnectionEvent;
+import org.zu.ardulink.protocol.IProtocol;
+
+public class BitTester {
+	static Link link;
+	
+	public static void seg_out(int n, int p) {
+		for(int i = 3; i >= 0; i--) {
+			link.sendPowerPinSwitch(p, (n%2 == 1) ? IProtocol.HIGH : IProtocol.LOW);
+			
+			n >>= 1;
+			p--;
+		}
+	}
+	
+	public static void init() {
+		// Set Nimbus look and feel
+		try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {}
+
+		String portCOM = new SerialConnectionJDialog(new JFrame(), "Arduino Connection", "Select the COM port").port;
+		if (portCOM == null || "".equals(portCOM)) {
+            JOptionPane.showMessageDialog(null, "Invalid COM PORT setted.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+		
+		link = Link.getDefaultInstance();
+		
+		link.addConnectionListener(new ConnectionListener() {
+			
+			@Override
+			public void disconnected(DisconnectionEvent e) {
+				System.out.println("Board disconnected");
+			}
+			
+			@Override
+			public void connected(ConnectionEvent e) {
+				System.out.println("Board connected");
+			}
+		});
+		
+		link.connect(portCOM);
+	}
+	
+	public static void main(String[] args) {
+		init();
+		link.addDigitalReadChangeListener(new DigitalReadChangeListener() {
+			
+			@Override
+			public void stateChanged(DigitalReadChangeEvent e) {
+				System.out.println("PIN: " + e.getPin() + " STATE: " + e.getValue());
+				System.out.println(e.getIncomingMessage());
+			}
+			
+			@Override
+			public int getPinListening() {
+				return 3;
+			}
+		});
+		
+		link.addRawDataListener(new RawDataListener() {
+			
+			@Override
+			public void parseInput(String arg0, int arg1, int[] arg2) {
+				System.out.println(arg0);
+			}
+		});
+		
+		while(true) {
+			try {
+				link.sendPowerPinSwitch(13, IProtocol.HIGH);
+				//link.writeSerial("serv");
+				
+				Thread.sleep(1000);
+				
+				//link.writeSerial("alp://ppsw/13/0");
+				link.sendPowerPinSwitch(13, IProtocol.LOW);
+				Thread.sleep(1000);
+			} catch(Exception e) {}
+		}
+		/*
+		for(int i = 9; i >= 0; i--) {
+			for(int j = 9; j >= 0; j--) {
+				try {
+					seg_out(i, 13);
+					seg_out(j, 7);
+					Thread.sleep(250);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		*/
+		
+		/*
+		while(true) {
+			java.util.Random r = new java.util.Random();
+			int a = r.nextInt(10);
+			int b = r.nextInt(10);
+			seg_out(a, 13);
+			seg_out(b, 7);
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		*/
+	}
+}

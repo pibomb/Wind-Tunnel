@@ -1,9 +1,13 @@
 package org.demons.test;
 
+import java.util.concurrent.ExecutionException;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.math3.analysis.function.Pow;
 import org.zu.ardulink.Link;
+import org.zu.ardulink.RawDataListener;
 import org.zu.ardulink.event.ConnectionEvent;
 import org.zu.ardulink.event.ConnectionListener;
 import org.zu.ardulink.event.DigitalReadChangeEvent;
@@ -73,12 +77,13 @@ public class BitTester {
 			}
 		});
 		
+		
 		while(true) {
 			try {
-				link.sendPowerPinSwitch(13, IProtocol.HIGH);
-				Thread.sleep(1000);
-				link.sendPowerPinSwitch(13, IProtocol.LOW);
-				Thread.sleep(1000);
+				link.sendPowerPinIntensity(99,255);
+				Thread.sleep(5000);
+				link.sendPowerPinIntensity(3,0);
+				Thread.sleep(5000);
 			} catch(Exception e) {}
 		}
 		/*
