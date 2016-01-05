@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.awt.Graphics2D"/>
-<fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
-<fullyQualifiedTypeName name="java.awt.Graphics"/>
 <fullyQualifiedTypeName name="org.demons.gui.ArduinoCommunicationPanel"/>
 <fullyQualifiedTypeName name="org.demons.gui.ArduinoPinManager"/>
 <fullyQualifiedTypeName name="org.demons.gui.WindTunnelGraphicsDisplay"/>
@@ -11,11 +8,8 @@
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValues"/>
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValuesPanel"/>
 <fullyQualifiedTypeName name="org.demons.gui.HistoryValuesPanel"/>
-<fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="javax.print.attribute.standard.PDLOverrideSupported"/>
 <fullyQualifiedTypeName name="org.demons.gui.ArduinoStatSummary"/>
-<fullyQualifiedTypeName name="java.awt.Font"/>
-<fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.gui.DigitalPinStatus"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -31,7 +25,6 @@
 <fullyQualifiedTypeName name="org.jfree.ui.about.SystemPropertiesTableModel"/>
 <fullyQualifiedTypeName name="com.sun.corba.se.spi.orbutil.fsm.Action"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="org.demons.gui.OperationFrame"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JToggleButton"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
@@ -41,23 +34,30 @@
 <fullyQualifiedTypeName name="org.demons.utils.MegaConstants"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeEvent"/>
 <fullyQualifiedTypeName name="javax.swing.JSeparator"/>
-<fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="com.sun.mail.imap.protocol.BODYSTRUCTURE"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
-<fullyQualifiedTypeName name="org.apache.commons.math3.analysis.function.Pow"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="org.demons.test.DigitalPinStatus"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.protocol.IProtocol"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.Link"/>
 <fullyQualifiedTypeName name="org.demons.ctrl.WindSpeedDisplay"/>
-<fullyQualifiedTypeName name="java.awt.GridLayout"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.lang.Override"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="com.sun.corba.se.impl.orbutil.threadpool.TimeoutException"/>
 <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
-<fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.gui.ToneController"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.gui.PWMController"/>
+<fullyQualifiedTypeName name="org.demons.gui.OperationFrame"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="com.sun.xml.internal.bind.v2.runtime.Coordinator"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.awt.Font"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.RawDataListener"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.analysis.function.Pow"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ExecutionException"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
 </qualifiedTypeNameHistroy>

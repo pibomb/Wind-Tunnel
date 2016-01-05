@@ -22,6 +22,11 @@ you code useful for a specific purpose. In this case you have to modify it to su
 your needs.
 */
 
+#include <Servo.h>
+
+Servo myservo;  // create servo object to control a servo
+int servoPin = 2; // variable to store the servo pin
+
 // int intensity = 0;               // led intensity this is needed just as example for this sketch
 String inputString = "";         // a string to hold incoming data (this is general code you can reuse)
 boolean stringComplete = false;  // whether the string is complete (this is general code you can reuse)
@@ -53,12 +58,8 @@ void setup() {
     pinMode(index, OUTPUT);
     digitalWrite(index, LOW);
   }
-  
-  // Turn off LED this is needed just as example for this sketch
-//  analogWrite(11, intensity);
-  
-  // Read from 3 this is needed just as example for this sketch
-  //pinMode(3, INPUT);
+
+  myservo.attach(servoPin);
 }
 
 void loop() {
@@ -84,8 +85,24 @@ void loop() {
           int separatorPosition = inputString.indexOf('/', 11 );
           String pin = inputString.substring(11,separatorPosition);
           String intens = inputString.substring(separatorPosition + 1);
-          pinMode(pin.toInt(), OUTPUT);
-          analogWrite(pin.toInt(),intens.toInt());
+          
+          if(pin.toInt() == 99) {
+            int pos;
+            for (pos = 0; pos <= intens.toInt(); pos += 1) { // goes from 0 degrees to 180 degrees
+              // in steps of 1 degree
+              myservo.write(pos);              // tell servo to go to position in variable 'pos'
+              delay(15);                       // waits 15ms for the servo to reach the position
+            }
+            for (pos = intens.toInt(); pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+              myservo.write(pos);              // tell servo to go to position in variable 'pos'
+              delay(15);                       // waits 15ms for the servo to reach the position
+            }
+            
+            //myservo.write(intens.toInt());
+          } else {
+            pinMode(pin.toInt(), OUTPUT);
+            analogWrite(pin.toInt(),intens.toInt());
+          }
       } else if(inputString.substring(6,10) == "ppsw") { // Power Pin Switch (this is general code you can reuse)
           int separatorPosition = inputString.indexOf('/', 11 );
           String pin = inputString.substring(11,separatorPosition);
