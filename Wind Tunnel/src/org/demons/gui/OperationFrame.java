@@ -222,6 +222,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 						}
 						timer.start();
 						wsd = new WindSpeedDisplay(link);
+						sp.setGraphicsDisplay(wtgd);
 					}
 				}).start();
 			}
