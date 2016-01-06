@@ -86,7 +86,8 @@ void loop() {
           String pin = inputString.substring(11,separatorPosition);
           String intens = inputString.substring(separatorPosition + 1);
           
-          if(pin.toInt() == 99) {
+          if(pin.toInt() == 99) { // Servo
+            /*
             int pos;
             for (pos = 0; pos <= intens.toInt(); pos += 1) { // goes from 0 degrees to 180 degrees
               // in steps of 1 degree
@@ -97,8 +98,8 @@ void loop() {
               myservo.write(pos);              // tell servo to go to position in variable 'pos'
               delay(15);                       // waits 15ms for the servo to reach the position
             }
-            
-            //myservo.write(intens.toInt());
+            */
+            myservo.write(intens.toInt());
           } else {
             pinMode(pin.toInt(), OUTPUT);
             analogWrite(pin.toInt(),intens.toInt());
