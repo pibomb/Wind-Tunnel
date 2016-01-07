@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import org.demons.ctrl.Anemometer;
 import org.demons.ctrl.WindSpeedDisplay;
 import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
@@ -61,14 +62,14 @@ public class OperationFrame extends JPanel implements ActionListener {
 	private Link link = Link.getDefaultInstance();
 	
 	private Timer timer;
-	public final int REFRESH_RATE = 500;
-	private int digit = 0;
+	public final int REFRESH_RATE = 100;
 	
 	private DigitalReadChangeListener[] drcl;
 	private AnalogReadChangeListener[] arcl;
 	private int digitalPin, analogPin;
-	private final int PIN_SETUP_TIME = 10;
+	private final int PIN_SETUP_TIME = 50;
 	
+	private Anemometer anemometer;
 	private WindSpeedDisplay wsd;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
@@ -157,81 +158,97 @@ public class OperationFrame extends JPanel implements ActionListener {
 		acp.setLink(link);
 		apm.setLink(link);
 	}
-
+	
+	public void initListeners() {
+		if(link != null && link.isConnected()) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println("RUN");
+					drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
+					for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
+						digitalPin = i;
+						drcl[i] = new DigitalReadChangeListener() {
+							int pin = digitalPin;
+							
+							@Override
+							public void stateChanged(DigitalReadChangeEvent e) {
+								int value = e.getValue();
+								
+								ass.setInfo(pin, value);
+								repaint();
+							}
+							
+							@Override
+							public int getPinListening() {
+								return pin;
+							}
+						};
+						link.addDigitalReadChangeListener(drcl[i]);
+						try {
+							Thread.sleep(PIN_SETUP_TIME);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+					arcl = new AnalogReadChangeListener[MegaConstants.ANALOG_INPUT_PIN_MAX+1];
+					for(int i = 0; i <= MegaConstants.ANALOG_INPUT_PIN_MAX; i++) {
+						analogPin = i;
+						arcl[i] = new AnalogReadChangeListener() {
+							int pin = analogPin;
+							
+							@Override
+							public void stateChanged(AnalogReadChangeEvent e) {
+								int value = e.getValue();
+								
+								ass.setInfo(MegaConstants.DIGITAL_INPUT_PIN_MAX+1+pin, value);
+								repaint();
+							}
+							
+							@Override
+							public int getPinListening() {
+								return pin;
+							}
+						};
+						link.addAnalogReadChangeListener(arcl[i]);
+						try {
+							Thread.sleep(PIN_SETUP_TIME);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+					
+					begin();
+				}
+			}).start();
+		}
+	}
+	
+	public void begin() {
+		timer.start();
+		
+		anemometer = new Anemometer();
+		link.addDigitalReadChangeListener(anemometer);
+		
+		wsd = new WindSpeedDisplay(link);
+		sp.setGraphicsDisplay(wtgd);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == "ACCESS") {
 			System.out.println("ACCESS");
 			
-			if(link != null && link.isConnected()) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("RUN");
-						drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
-						for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
-							digitalPin = i;
-							drcl[i] = new DigitalReadChangeListener() {
-								int pin = digitalPin;
-								
-								@Override
-								public void stateChanged(DigitalReadChangeEvent e) {
-									int value = e.getValue();
-									
-									ass.setInfo(pin, value);
-									repaint();
-								}
-								
-								@Override
-								public int getPinListening() {
-									return pin;
-								}
-							};
-							link.addDigitalReadChangeListener(drcl[i]);
-							try {
-								Thread.sleep(PIN_SETUP_TIME);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						arcl = new AnalogReadChangeListener[MegaConstants.ANALOG_INPUT_PIN_MAX+1];
-						for(int i = 0; i <= MegaConstants.ANALOG_INPUT_PIN_MAX; i++) {
-							analogPin = i;
-							arcl[i] = new AnalogReadChangeListener() {
-								int pin = analogPin;
-								
-								@Override
-								public void stateChanged(AnalogReadChangeEvent e) {
-									int value = e.getValue();
-									
-									ass.setInfo(MegaConstants.DIGITAL_INPUT_PIN_MAX+1+pin, value);
-									repaint();
-								}
-								
-								@Override
-								public int getPinListening() {
-									return pin;
-								}
-							};
-							link.addAnalogReadChangeListener(arcl[i]);
-							try {
-								Thread.sleep(PIN_SETUP_TIME);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						timer.start();
-						wsd = new WindSpeedDisplay(link);
-						sp.setGraphicsDisplay(wtgd);
-					}
-				}).start();
-			}
+			initListeners();
+			begin();
+			
 		} else if(e.getSource() == timer) {
-			wsd.displayDigit(3, digit++);
-			digit %= 10;
+			wsd.displayValue(9899.4);
 			
 			hvp.runHistory();
 			cvp.updateCurrentValues();
+			
+			System.out.println(anemometer.getDuration());
 		}
 	}
 }

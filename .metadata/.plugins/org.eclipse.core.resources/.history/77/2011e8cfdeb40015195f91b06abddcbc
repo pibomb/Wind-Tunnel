@@ -1,0 +1,26 @@
+package org.demons.ctrl;
+
+import org.zu.ardulink.event.DigitalReadChangeEvent;
+import org.zu.ardulink.event.DigitalReadChangeListener;
+
+public class Anemometer implements DigitalReadChangeListener {
+	private int pin = 7;
+	
+	private long a = 0, b = 0, duration = 0;
+	
+	public Anemometer() {
+		a = System.currentTimeMillis();
+		b = System.currentTimeMillis();
+	}
+
+	@Override
+	public int getPinListening() {
+		return pin;
+	}
+
+	@Override
+	public void stateChanged(DigitalReadChangeEvent arg0) {
+		b = System.currentTimeMillis();
+		duration = b - a;
+	}
+}

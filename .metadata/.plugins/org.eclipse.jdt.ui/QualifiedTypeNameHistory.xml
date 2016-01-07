@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.demons.gui.Console"/>
-<fullyQualifiedTypeName name="org.demons.gui.SettingsPanel"/>
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValues"/>
 <fullyQualifiedTypeName name="org.demons.gui.CurrentValuesPanel"/>
 <fullyQualifiedTypeName name="org.demons.gui.HistoryValuesPanel"/>
@@ -22,7 +20,6 @@
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="javax.swing.JToggleButton"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.ConnectionListener"/>
-<fullyQualifiedTypeName name="org.zu.ardulink.event.DigitalReadChangeListener"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeListener"/>
 <fullyQualifiedTypeName name="org.demons.utils.MegaConstants"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.event.AnalogReadChangeEvent"/>
@@ -30,8 +27,6 @@
 <fullyQualifiedTypeName name="com.sun.mail.imap.protocol.BODYSTRUCTURE"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
-<fullyQualifiedTypeName name="org.demons.test.DigitalPinStatus"/>
-<fullyQualifiedTypeName name="org.zu.ardulink.protocol.IProtocol"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.Link"/>
 <fullyQualifiedTypeName name="org.demons.ctrl.WindSpeedDisplay"/>
 <fullyQualifiedTypeName name="java.lang.Override"/>
@@ -45,9 +40,7 @@
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="com.sun.xml.internal.bind.v2.runtime.Coordinator"/>
 <fullyQualifiedTypeName name="org.zu.ardulink.RawDataListener"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.analysis.function.Pow"/>
-<fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="java.util.concurrent.ExecutionException"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
@@ -60,4 +53,11 @@
 <fullyQualifiedTypeName name="com.sun.corba.se.spi.orbutil.fsm.Action"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="org.demons.test.DigitalPinStatus"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.event.DigitalReadChangeListener"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="org.demons.ctrl.Anemometer"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="org.zu.ardulink.protocol.IProtocol"/>
 </qualifiedTypeNameHistroy>

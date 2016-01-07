@@ -1,0 +1,9 @@
+package org.demons.ctrl;
+
+import org.zu.ardulink.event.DigitalReadChangeListener;
+
+public class Anemometer {
+	public Anemometer(DigitalReadChangeListener pin) {
+		
+	}
+}
