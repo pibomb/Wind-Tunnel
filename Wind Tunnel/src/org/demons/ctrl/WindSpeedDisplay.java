@@ -11,6 +11,9 @@ public class WindSpeedDisplay {
 	private final int[][] DIGIT_PIN;
 	private final int SIGN_PIN;
 	
+	private boolean ready = true;
+	private double value = 0;
+	
 	public WindSpeedDisplay(Link l) {
 		link = l;
 		DIGIT_PIN = new int[4][4];
@@ -38,43 +41,63 @@ public class WindSpeedDisplay {
 		SIGN_PIN = 38;
 	}
 	
-	public void displayValue(double value) {
-		value = Math.abs(value);
+	public boolean isReady() {
+		return ready;
+	}
+	
+	public void displayValue(double val) {
+		if(!ready)
+			return;
 		
-		value = Math.max(value, EPSILON);
+		this.value = val;
 		
-		// The exponent
-		int d = (int) Math.floor(Math.log10(value));
-		
-		// Array to hold the displayed digits
-		int[] digits = new int[4];
-		boolean sign = false;
-		
-		if(d > 9) { // If the display is maxed out
-			for(int i = 3; i >= 0; i--) {
-				digits[i] = 9;
-			}
-		} else if(d < -9) { // If the display is defacto zero
-			for(int i = 3; i >= 0; i--) {
-				digits[i] = 0;
-			}
-		} else {
-			// Mantissa of number in scientific notation
-			double x = value / Math.pow(10, d);
+		new Thread(new Runnable() {
+			// Array to hold the displayed digits
+			private int[] digits = new int[4];
+			private int dig = 0;
 			
-			digits[3] = (int) Math.floor(x);
-			digits[2] = (int) Math.floor(10*x) % 10;
-			digits[1] = (int) Math.floor(100*x) % 10;
-			digits[0] = Math.abs(d) % 10;
-			
-			if(d < 0)
-				sign = true;
-		}
-		
-		for(int i = 3; i >= 0; i--) {
-			displayDigit(i, digits[i]);
-		}
-		link.sendPowerPinSwitch(SIGN_PIN, sign ? IProtocol.HIGH : IProtocol.LOW);
+			@Override
+			public void run() {
+				ready = false;
+				
+				value = Math.abs(value);
+				value = Math.max(value, EPSILON);
+				
+				// The exponent
+				int d = (int) Math.floor(Math.log10(value));
+				
+				boolean sign = false;
+				
+				if(d > 9) { // If the display is maxed out
+					for(int i = 3; i >= 0; i--) {
+						digits[i] = 9;
+					}
+				} else if(d < -9) { // If the display is defacto zero
+					for(int i = 3; i >= 0; i--) {
+						digits[i] = 0;
+					}
+				} else {
+					// Mantissa of number in scientific notation
+					double x = value / Math.pow(10, d);
+					
+					digits[3] = (int) Math.floor(x);
+					digits[2] = (int) Math.floor(10*x) % 10;
+					digits[1] = (int) Math.floor(100*x) % 10;
+					digits[0] = Math.abs(d) % 10;
+					
+					if(d < 0)
+						sign = true;
+				}
+				
+				for(dig = 3; dig >= 0; dig--) {
+					displayDigit(dig, digits[dig]);
+				}
+				
+				link.sendPowerPinSwitch(SIGN_PIN, sign ? IProtocol.HIGH : IProtocol.LOW);
+				
+				ready = true;
+			}
+		}).start();
 	}
 	
 	public void displayDigit(int digit, int value) {
@@ -82,6 +105,12 @@ public class WindSpeedDisplay {
 			link.sendPowerPinSwitch(DIGIT_PIN[digit][pin], (value % 2 == 1) ? IProtocol.HIGH : IProtocol.LOW);
 			
 			value >>= 1;
+			
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

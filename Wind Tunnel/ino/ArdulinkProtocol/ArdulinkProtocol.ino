@@ -58,7 +58,7 @@ void setup() {
     pinMode(index, OUTPUT);
     digitalWrite(index, LOW);
   }
-
+  
   myservo.attach(servoPin);
 }
 
