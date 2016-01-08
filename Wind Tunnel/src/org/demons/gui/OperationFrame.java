@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import org.demons.ctrl.Anemometer;
+import org.demons.ctrl.FanControl;
+import org.demons.ctrl.ServoControl;
 import org.demons.ctrl.WindSpeedDisplay;
 import org.demons.utils.MegaConstants;
 import org.zu.ardulink.Link;
@@ -71,6 +73,8 @@ public class OperationFrame extends JPanel implements ActionListener {
 	
 	private Anemometer anemometer;
 	private WindSpeedDisplay wsd;
+	private ServoControl servoCtrl;
+	private FanControl fanCtrl;
 	
 	private Font titleFont = new Font("Century", Font.BOLD, 16);
 	
@@ -165,8 +169,9 @@ public class OperationFrame extends JPanel implements ActionListener {
 				@Override
 				public void run() {
 					System.out.println("RUN");
+					
 					drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
-					for(int i = 2; i <= 13; i++) {
+					for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
 						digitalPin = i;
 						drcl[i] = new DigitalReadChangeListener() {
 							int pin = digitalPin;
@@ -184,13 +189,14 @@ public class OperationFrame extends JPanel implements ActionListener {
 								return pin;
 							}
 						};
-						link.addDigitalReadChangeListener(drcl[i]);
+						//link.addDigitalReadChangeListener(drcl[i]);
 						try {
 							Thread.sleep(PIN_SETUP_TIME);
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
 					}
+					
 					arcl = new AnalogReadChangeListener[MegaConstants.ANALOG_INPUT_PIN_MAX+1];
 					for(int i = 0; i <= MegaConstants.ANALOG_INPUT_PIN_MAX; i++) {
 						analogPin = i;
@@ -217,8 +223,6 @@ public class OperationFrame extends JPanel implements ActionListener {
 							e1.printStackTrace();
 						}
 					}
-					
-					begin();
 				}
 			}).start();
 		}
@@ -232,6 +236,10 @@ public class OperationFrame extends JPanel implements ActionListener {
 		
 		wsd = new WindSpeedDisplay(link);
 		sp.setGraphicsDisplay(wtgd);
+		servoCtrl = new ServoControl(link);
+		sp.addServoControl(servoCtrl);
+		fanCtrl = new FanControl(link);
+		sp.addFanControl(fanCtrl);
 	}
 	
 	@Override
@@ -242,13 +250,12 @@ public class OperationFrame extends JPanel implements ActionListener {
 			initListeners();
 			begin();
 			
+			acp.repaint();
 		} else if(e.getSource() == timer) {
 			wsd.displayValue(9899.4);
 			
 			hvp.runHistory();
 			cvp.updateCurrentValues();
-			
-			//System.out.println(anemometer.getDuration());
 		}
 	}
 }

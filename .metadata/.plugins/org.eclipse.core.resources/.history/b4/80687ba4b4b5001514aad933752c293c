@@ -1,0 +1,23 @@
+package org.demons.ctrl;
+
+import org.zu.ardulink.Link;
+
+public class ServoControl {
+	private Link link = Link.getDefaultInstance();
+	
+	private int pin = 2;
+	private int angle = 90;
+	
+	public ServoControl() {
+		
+	}
+	
+	public int getAngle() {
+		return angle;
+	}
+	
+	public void setAngle(int theta) {
+		angle = theta + 90;
+		
+	}
+}

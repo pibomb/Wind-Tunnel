@@ -1,0 +1,9 @@
+package org.demons.ctrl;
+
+public class FanControl {
+	private final int[] fanPins = {8, 9, 10, 11};
+	
+	public FanControl() {
+		
+	}
+}

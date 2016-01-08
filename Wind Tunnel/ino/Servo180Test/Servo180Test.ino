@@ -9,9 +9,15 @@ void setup() {
 }
 
 void loop() {
+  myservo.write(180);
+  delay(1000);
+  myservo.write(0);
+  delay(1000);
+  /*
   if(Serial.available() > 0) {
     int pos = Serial.parseInt();
     myservo.write(pos);
   }
+  */
 }
 

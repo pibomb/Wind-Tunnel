@@ -1,5 +1,6 @@
 package org.demons.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,29 +11,58 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-class SettingsPanel extends JPanel {
+import org.demons.ctrl.FanControl;
+import org.demons.ctrl.ServoControl;
+import org.zu.ardulink.Link;
+
+class SettingsPanel extends JPanel implements ChangeListener {
 	private static final long serialVersionUID = -2739228960818599179L;
-	private Font airfoilFont;
+	private Font airfoilFont, sliderFont;
 	private JButton airfoil1, airfoil2, airfoil3, airfoil4, exit, setWindspeed, setAngle;
 	private SpinnerNumberModel windspeed, angle;
+	private JSlider windspeedSlider, angleSlider;
+	private JLabel airspeedLabel, angleLabel;
+	
+	private ServoControl servoCtrl;
+	private FanControl fanCtrl;
 	
 	private WindTunnelGraphicsDisplay wtgd = null;
 	
 	public SettingsPanel(int width, int height) {
 		super();
 		
-		setLayout(new FlowLayout());
+		setLayout(new BorderLayout());
 		setSize(width, height);
 		
-		airfoilFont = new Font("Century Gothic", Font.PLAIN, 20);
+		airfoilFont = new Font("Century Gothic", Font.PLAIN, 25);
+		
+		JPanel north = new JPanel();
+		JPanel center = new JPanel();
+		JLabel south = new JLabel("MSB Levitate 5000 - by Maxwell's Demons");
+		south.setFont(new Font("Century Gothic", Font.PLAIN, 48));
+		south.setHorizontalAlignment(JLabel.CENTER);
+		south.setForeground(Color.BLUE);
+		
+		north.setOpaque(false);
+		center.setOpaque(false);
+		south.setOpaque(false);
 		
 		exit = new JButton("EXIT");
-		exit.setFont(new Font("Courier New", Font.BOLD, 25));
+		exit.setFont(new Font("Courier New", Font.BOLD, 30));
 		exit.setBackground(new Color(128, 0, 64));
 		exit.setForeground(Color.WHITE);
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
 		airfoil1 = new JButton("Airfoil 1");
 		airfoil2 = new JButton("Airfoil 2");
@@ -69,15 +99,47 @@ class SettingsPanel extends JPanel {
 		windspeed = new SpinnerNumberModel(0, 0, 255, 1);
 		angle = new SpinnerNumberModel(0, -90, 90, 1);
 		
-		add(exit);
-		add(airfoil1);
-		add(airfoil2);
-		add(airfoil3);
-		add(airfoil4);
-		add(setWindspeed);
-		add(new JSpinner (windspeed));
-		add(setAngle);
-		add(new JSpinner(angle));
+		sliderFont = new Font("Century Gothic", Font.PLAIN, 16);
+		
+		windspeedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+		windspeedSlider.setMajorTickSpacing(25);
+		windspeedSlider.setMinorTickSpacing(5);
+		windspeedSlider.setPaintTicks(true);
+		windspeedSlider.setPaintLabels(true);
+		windspeedSlider.setFont(sliderFont);
+		windspeedSlider.addChangeListener(this);
+		
+		angleSlider = new JSlider(JSlider.HORIZONTAL, -90, 90, 0);
+		angleSlider.setMajorTickSpacing(45);
+		angleSlider.setMinorTickSpacing(15);
+		angleSlider.setPaintTicks(true);
+		angleSlider.setPaintLabels(true);
+		angleSlider.setFont(sliderFont);
+		angleSlider.addChangeListener(this);
+		
+		airspeedLabel= new JLabel("Wind Speed: ");
+		airspeedLabel.setFont(airfoilFont);
+		
+		angleLabel= new JLabel("Angle of Attack: ");
+		angleLabel.setFont(airfoilFont);
+		
+		north.add(exit);
+		north.add(airfoil1);
+		north.add(airfoil2);
+		north.add(airfoil3);
+		north.add(airfoil4);
+		//add(setWindspeed);
+		//add(new JSpinner (windspeed));
+		//add(setAngle);
+		//add(new JSpinner(angle));
+		center.add(airspeedLabel);
+		center.add(windspeedSlider);
+		center.add(angleLabel);
+		center.add(angleSlider);
+		
+		add(north, BorderLayout.NORTH);
+		add(center, BorderLayout.CENTER);
+		add(south, BorderLayout.SOUTH);
 		
 		repaint();
 	}
@@ -98,10 +160,42 @@ class SettingsPanel extends JPanel {
 		airfoil4.addActionListener(wtgd);
 	}
 	
+	public void addServoControl(ServoControl servo) {
+		servoCtrl = servo;
+	}
+	
+	public void addFanControl(FanControl fan) {
+		fanCtrl = fan;
+	}
+	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		JSlider source = (JSlider)e.getSource();
+		
+		if(!source.getValueIsAdjusting()) {
+			if(source.equals(angleSlider)) {
+				System.out.print("Servo: ");
+				
+				int angle = (int) source.getValue();
+				System.out.println(angle);
+				
+				servoCtrl.setAngle(angle);
+			} else if(source.equals(windspeedSlider)) {
+				System.out.print("Fan: ");
+				
+				int power = (int) source.getValue();
+				System.out.println(power);
+				
+				fanCtrl.setPWM(power);
+			}
+		}
 	}
 }

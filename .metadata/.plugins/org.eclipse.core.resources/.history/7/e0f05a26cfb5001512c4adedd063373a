@@ -1,0 +1,7 @@
+package org.demons.ctrl;
+
+public class FanControl {
+	public FanControl() {
+		
+	}
+}

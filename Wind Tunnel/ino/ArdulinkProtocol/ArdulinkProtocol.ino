@@ -26,6 +26,7 @@ your needs.
 
 Servo myservo;  // create servo object to control a servo
 int servoPin = 2; // variable to store the servo pin
+int servoPos = 0; // variable to store the servo position
 
 // int intensity = 0;               // led intensity this is needed just as example for this sketch
 String inputString = "";         // a string to hold incoming data (this is general code you can reuse)
@@ -63,43 +64,23 @@ void setup() {
 }
 
 void loop() {
+  myservo.write(servoPos);
+  
   // when a newline arrives:
   if (stringComplete) {
     
     if(inputString.startsWith("alp://")) { // OK is a message I know (this is general code you can reuse)
-    
+      
       boolean msgRecognized = true;
       
-      if(inputString.substring(6,10) == "kprs") { // KeyPressed
-        // here you can write your own code. For instance the commented code change pin intensity if you press 'a' or 's'
-        // take the command and change intensity on pin 11 this is needed just as example for this sketch
-        //char commandChar = inputString.charAt(14);
-        //if(commandChar == 'a' and intensity > 0) { // If press 'a' less intensity
-        //  intensity--;
-        //  analogWrite(11,intensity);
-        //} else if(commandChar == 's' and intensity < 125) { // If press 's' more intensity
-        //  intensity++;
-        //  analogWrite(11,intensity);
-        //}
-      } else if(inputString.substring(6,10) == "ppin") { // Power Pin Intensity (this is general code you can reuse)
+      if(inputString.substring(6,10) == "ppin") { // Power Pin Intensity (this is general code you can reuse)
           int separatorPosition = inputString.indexOf('/', 11 );
           String pin = inputString.substring(11,separatorPosition);
           String intens = inputString.substring(separatorPosition + 1);
           
           if(pin.toInt() == 99) { // Servo
-            /*
-            int pos;
-            for (pos = 0; pos <= intens.toInt(); pos += 1) { // goes from 0 degrees to 180 degrees
-              // in steps of 1 degree
-              myservo.write(pos);              // tell servo to go to position in variable 'pos'
-              delay(15);                       // waits 15ms for the servo to reach the position
-            }
-            for (pos = intens.toInt(); pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-              myservo.write(pos);              // tell servo to go to position in variable 'pos'
-              delay(15);                       // waits 15ms for the servo to reach the position
-            }
-            */
-            myservo.write(intens.toInt());
+            servoPos = intens.toInt();
+            myservo.write(servoPos);
           } else {
             pinMode(pin.toInt(), OUTPUT);
             analogWrite(pin.toInt(),intens.toInt());
@@ -149,7 +130,7 @@ void loop() {
       } else {
         msgRecognized = false; // this sketch doesn't know other messages in this case command is ko (not ok)
       }
-      
+
       // Prepare reply message if caller supply a message id (this is general code you can reuse)
       int idPosition = inputString.indexOf("?id=");
       if(idPosition != -1) {
@@ -190,7 +171,7 @@ void loop() {
   }
   for (index = 0; index < analogPinListeningNum; index++) {
     if(analogPinListening[index] == true) {
-      int value = highPrecisionAnalogRead(index);
+      int value = analogRead(index);
       if(value != analogPinListenedValue[index]) {
         analogPinListenedValue[index] = value;
         Serial.print("alp://ared/");
@@ -204,16 +185,6 @@ void loop() {
   }
 }
 
-// Reads 4 times and computes the average value
-int highPrecisionAnalogRead(int pin) {
-  int value1 = analogRead(pin);
-  int value2 = analogRead(pin);
-  int value3 = analogRead(pin);
-  int value4 = analogRead(pin);
-  
-  int retvalue = (value1 + value2 + value3 + value4) / 4;
-}
-
 /*
   SerialEvent occurs whenever a new data comes in the
  hardware serial RX.  This routine is run between each
@@ -222,10 +193,10 @@ int highPrecisionAnalogRead(int pin) {
  This is general code you can reuse.
  */
 void serialEvent() {
-    
   while (Serial.available() && !stringComplete) {
     // get the new byte:
     char inChar = (char)Serial.read();
+    
     // add it to the inputString:
     inputString += inChar;
     // if the incoming character is a newline, set a flag

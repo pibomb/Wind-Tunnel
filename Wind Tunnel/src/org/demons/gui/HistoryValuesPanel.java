@@ -49,8 +49,8 @@ class HistoryValuesPanel extends JPanel {
 		setSize(width, height);
 		
 		titleFont = new Font("Century", Font.BOLD, 16);
-		regularFont = new Font("Dialog", Font.BOLD, 14);
-		tableFont = new Font("Dialog", Font.BOLD, 12);
+		regularFont = new Font("Dialog", Font.BOLD, 16);
+		tableFont = new Font("Dialog", Font.BOLD, 14);
 		
 		title = new JLabel("HISTORY OF VALUES", JLabel.CENTER);
 		title.setFont(titleFont);
@@ -58,13 +58,13 @@ class HistoryValuesPanel extends JPanel {
 		title.setForeground(Color.BLACK);
 		
 		descBar1 = new JPanel();
-		JLabel desc1 = new JLabel("Time                     Speed                   Lift                   Drag");
+		JLabel desc1 = new JLabel("Time                Speed              Lift              Drag");
 		desc1.setFont(tableFont);
 		descBar1.add(desc1);
 		descBar1.setBounds(0, 0, width,12);
 		
 		descBar2 = new JPanel();
-		JLabel desc2 = new JLabel("Time                     Speed                   Lift                   Drag");
+		JLabel desc2 = new JLabel("Time                Speed              Lift              Drag");
 		desc2.setFont(tableFont);
 		descBar2.add(desc2);
 		descBar2.setBounds(0, 0, width,12);
