@@ -1,0 +1,59 @@
+package org.demons.gui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import com.sun.corba.se.spi.orbutil.fsm.Action;
+
+class WindTunnelGraphicsDisplay extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -2739228960818599179L;
+	private BufferedImage airfoil1, airfoil2, airfoil3, airfoil4;
+
+	public WindTunnelGraphicsDisplay(int width, int height) {
+		super();
+		
+		setLayout(null);
+		setSize(width, height);
+		
+		try
+		{
+			airfoil1 = ImageIO.read(getClass().getResource("images/airfoil1.png"));
+			airfoil2 = ImageIO.read(getClass().getResource("images/airfoil2.png"));
+			airfoil3 = ImageIO.read(getClass().getResource("images/airfoil3.png"));
+			airfoil4 = ImageIO.read(getClass().getResource("images/airfoil4.png"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		repaint();
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(airfoil1, 0, 0, null);
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("A1")) {
+			
+		} else if(e.getActionCommand().equals("A2")) {
+			
+		} else if(e.getActionCommand().equals("A3")) {
+			
+		} else if(e.getActionCommand().equals("A4")) {
+			
+		}
+	}
+}
