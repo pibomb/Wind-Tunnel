@@ -166,7 +166,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 				public void run() {
 					System.out.println("RUN");
 					drcl = new DigitalReadChangeListener[MegaConstants.DIGITAL_INPUT_PIN_MAX+1];
-					for(int i = 0; i <= MegaConstants.DIGITAL_INPUT_PIN_MAX; i++) {
+					for(int i = 2; i <= 13; i++) {
 						digitalPin = i;
 						drcl[i] = new DigitalReadChangeListener() {
 							int pin = digitalPin;
@@ -248,7 +248,7 @@ public class OperationFrame extends JPanel implements ActionListener {
 			hvp.runHistory();
 			cvp.updateCurrentValues();
 			
-			System.out.println(anemometer.getDuration());
+			//System.out.println(anemometer.getDuration());
 		}
 	}
 }

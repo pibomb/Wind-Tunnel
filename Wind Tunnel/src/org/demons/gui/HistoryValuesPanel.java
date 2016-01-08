@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -67,7 +68,7 @@ class HistoryValuesPanel extends JPanel {
 		desc2.setFont(tableFont);
 		descBar2.add(desc2);
 		descBar2.setBounds(0, 0, width,12);
-
+		
 		mainPanel1 = new JPanel();
 		
 		scrollArea1 = new JTextArea(30,30);
@@ -103,9 +104,10 @@ class HistoryValuesPanel extends JPanel {
 		repaint();
 	}
 	
-	public void runHistory()
-	{
-		textString1 += "\n        "+(time + "\t       "+ parent.getAss().getInfo(false,10)+ "\t       " + parent.getAss().getInfo(false,11)+ "\t       " + parent.getAss().getInfo(false, 12));
+	public void runHistory() {
+		DecimalFormat df = new DecimalFormat("#.#####");
+		
+		textString1 += "\n        "+(df.format(time) + "\t       "+ parent.getAss().getInfo(false,10)+ "\t       " + parent.getAss().getInfo(false,11)+ "\t       " + parent.getAss().getInfo(false, 12));
 		scrollArea1.setText(textString1);
 		
 		textString2 += "\n        "+(time + "\t       "+ parent.getAss().getInfo(false,9)+ "\t       " + parent.getAss().getInfo(false,10)+ "\t       " + parent.getAss().getInfo(false, 11));

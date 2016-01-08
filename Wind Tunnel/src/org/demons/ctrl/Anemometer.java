@@ -29,6 +29,7 @@ public class Anemometer implements DigitalReadChangeListener {
 			b = System.currentTimeMillis();
 			duration = b - a;
 			a = b;
+			System.out.println(duration);
 		}
 	}
 }
