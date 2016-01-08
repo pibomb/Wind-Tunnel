@@ -5702,3 +5702,48 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 !MESSAGE Could not find or access license at C:\Users\Morris\AppData\Roaming\Tasktop.
 !SUBENTRY 1 com.tasktop.client.auth 2 0 2016-01-07 20:01:48.335
 !MESSAGE Could not find or access license anywhere.
+!SESSION 2016-01-07 20:19:16.796 -----------------------------------------------
+eclipse.buildId=4.5.1.M20150904-0015
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2016-01-07 20:19:53.998
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Morris'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.tasktop.client.auth 2 0 2016-01-07 20:19:54.123
+!MESSAGE Reading license failed.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2016-01-07 20:19:54.123
+!MESSAGE Could not find or access license at C:\Users\Morris\AppData\Roaming\Tasktop.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2016-01-07 20:19:54.123
+!MESSAGE Could not find or access license anywhere.
+!SESSION 2016-01-07 22:19:27.419 -----------------------------------------------
+eclipse.buildId=4.5.1.M20150904-0015
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2016-01-07 22:19:54.783
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.egit.ui 2 0 2016-01-07 22:21:52.106
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Morris'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.tasktop.client.auth 2 0 2016-01-07 22:21:53.108
+!MESSAGE Reading license failed.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2016-01-07 22:21:53.108
+!MESSAGE Could not find or access license at C:\Users\Morris\AppData\Roaming\Tasktop.
+!SUBENTRY 1 com.tasktop.client.auth 2 0 2016-01-07 22:21:53.108
+!MESSAGE Could not find or access license anywhere.

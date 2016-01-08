@@ -1,0 +1,12 @@
+package org.demons.ctrl;
+
+public class ServoControl {
+	private int pin = 2;
+	private int angle = 90;
+	
+	public ServoControl() {
+		
+	}
+	
+	public void 
+}
